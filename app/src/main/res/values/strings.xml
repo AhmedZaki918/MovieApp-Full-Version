@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">MoviesApp</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="no_movies">No data to show</string>
+
+    // Label for user rating in DetailsActivity
+    <string name="rate">Rating:</string>
+
+    // Label for release date in DetailsActivity
+    <string name="date">Release date:</string>
+
+    // Label for the summary in DetailsActivity
+    <string name="summary">Overview</string>
+
+    // Label of the DetailsActivity layout
+    <string name="detailsTrailers">Details</string>
+
+    <string name="settings_menu_item">Settings</string>
+    <string name="settings_title">Custom Settings</string>
+
+    <!-- Strings For Sort-By Preference -->
+    <string name="settings_sort_by_label">Sort By</string>
+    <string name="settings_sort_by_key" translatable="false">sort_by</string>
+    <string name="settings_sort_by_default" translatable="false">@string/settings_sort_by_highest_rated_value</string>
+
+    <!-- Label for sort-by highest-rated option -->
+    <string name="settings_sort_by_highest_rated_label">Highest rated</string>
+    <string name="settings_sort_by_highest_rated_value" translatable="false">vote_count.desc</string>
+
+    <!-- Label for sort-by popularity option -->
+    <string name="settings_sort_by_popularity_label">Most popular</string>
+    <string name="settings_sort_by_popularity_value" translatable="false">popularity.desc</string>
+
+    <!-- For test only -->
+    <string name="review_test">Whether a movie is a rotten tomato or a brilliant work of art, if people are watching it,
+        its worth critiquing.A decent movie review should entertain, persuade and inform,
+        providing an original opinion without giving away too much of the plot.
+        A great movie review can be a work of art in its own right. Read on to learn how to analyze a movie,
+        come up with an interesting thesis and write a review as entertaining as your source material.</string>
+    <string name="favourite">Favourite Movies</string>
+    <string name="trailer_label">Trailer</string>
+    <string name="reviews_label">Reviews</string>
+    <string name="mikl">Mikl</string>
+    <string name="error_fetch">Error fetching the data</string>
+
+
+</resources>
