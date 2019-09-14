@@ -18,9 +18,7 @@ import java.util.List;
 @Entity(tableName = "movie")
 public class MovieData implements Parcelable {
 
-    @PrimaryKey(autoGenerate = true)
-    private int movieId;
-
+    @PrimaryKey(autoGenerate = false)
     @SerializedName("id")
     private int id;
 
@@ -141,11 +139,6 @@ public class MovieData implements Parcelable {
         return id;
     }
 
-    // Get the primary key to use it in database
-    public int getMovieId() {
-        return movieId;
-    }
-
     // Get the results array
     public List<MovieData> getResults() {
         return results;
@@ -154,10 +147,6 @@ public class MovieData implements Parcelable {
     // Setters
     public void setResults(List<MovieData> results) {
         this.results = results;
-    }
-
-    public void setMovieId(int movieId) {
-        this.movieId = movieId;
     }
 
     public void setId(int id) {

@@ -12,18 +12,6 @@
         android:layout_height="match_parent"
         tools:context=".activity.DetailsActivity">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="16dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
-            android:src="@drawable/baseline_favorite_white_18"
-            app:layout_constraintStart_toEndOf="@+id/iv_poster"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
         <ImageView
             android:id="@+id/iv_poster"
             android:layout_width="wrap_content"
@@ -143,6 +131,17 @@
             app:layout_constraintStart_toEndOf="@+id/iv_poster"
             app:layout_constraintTop_toBottomOf="@+id/imageView"
             app:srcCompat="@drawable/baseline_whatshot_white_18" />
+
+        <CheckBox
+            android:id="@+id/ch_favou"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/checkbox_state"
+            android:button="@null"
+            app:layout_constraintStart_toEndOf="@+id/iv_poster"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
 
     </android.support.constraint.ConstraintLayout>

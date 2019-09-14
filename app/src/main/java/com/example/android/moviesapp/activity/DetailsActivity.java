@@ -1,28 +1,28 @@
 package com.example.android.moviesapp.activity;
 
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
-import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.moviesapp.R;
 import com.example.android.moviesapp.adapter.Constants;
 import com.example.android.moviesapp.adapter.ReviewAdapter;
 import com.example.android.moviesapp.adapter.TrailerAdapter;
 import com.example.android.moviesapp.database.AppDatabase;
 import com.example.android.moviesapp.database.AppExecutors;
 import com.example.android.moviesapp.model.MovieData;
-import com.example.android.moviesapp.R;
 import com.example.android.moviesapp.model.Reviews.DetailsReview;
 import com.example.android.moviesapp.model.Reviews.Reviews;
-import com.example.android.moviesapp.model.Trailers.Trailers;
 import com.example.android.moviesapp.model.Trailers.DetailsTrailer;
+import com.example.android.moviesapp.model.Trailers.Trailers;
 import com.example.android.moviesapp.network.APIClient;
 import com.squareup.picasso.Picasso;
 
@@ -31,6 +31,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,8 +48,20 @@ public class DetailsActivity extends AppCompatActivity {
     TextView overview;
     @BindView(R.id.tv_release_date)
     TextView releaseDate;
-    @BindView(R.id.fab)
-    FloatingActionButton save;
+    @BindView(R.id.ch_favou)
+    CheckBox save;
+    @BindView(R.id.textView5)
+    TextView textView5;
+    @BindView(R.id.tv_trailer_label)
+    TextView tvTrailerLabel;
+    @BindView(R.id.recycler_view_trailer)
+    RecyclerView recyclerViewTrailer;
+    @BindView(R.id.tv_reviews_label)
+    TextView tvReviewsLabel;
+    @BindView(R.id.recycler_view_reviews)
+    RecyclerView recyclerViewReviews;
+    @BindView(R.id.imageView)
+    ImageView imageView;
 
     // String variables to store the given value passed by the intent
     private String givenPoster;
@@ -70,6 +83,12 @@ public class DetailsActivity extends AppCompatActivity {
     MovieData movieData;
     // Member variable for the Database
     private AppDatabase mDb;
+
+    // variables for SharedPreferences
+    private SharedPreferences StatePreferences;
+    private SharedPreferences.Editor StatePrefsEditor;
+    private Boolean State;
+    private int movId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,16 +143,14 @@ public class DetailsActivity extends AppCompatActivity {
         displayTrailers(movieData.getId());
         displayReviews(movieData.getId());
 
-        // Put the selected movie in user favourites
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onSaveButtonClicked();
-                Toast toast = Toast.makeText(DetailsActivity.this, "Saved", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
-                toast.show();
-            }
-        });
+        // To save the state of CheckBox Favourite button (Check And UnChecked)
+        StatePreferences = getSharedPreferences("ChkPrefs", MODE_PRIVATE);
+        StatePrefsEditor = StatePreferences.edit();
+        State = StatePreferences.getBoolean("CheckState", false);
+        movId = StatePreferences.getInt("Movieid", 0);
+        if (State == true && movId == movieData.getId()) {
+            save.setChecked(true);
+        }
     }
 
     // Get the trailers by Retrofit library
@@ -176,13 +193,41 @@ public class DetailsActivity extends AppCompatActivity {
         });
     }
 
-    // Save data to the database
-    public void onSaveButtonClicked() {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                mDb.movieDao().insertMovie(movieData);
-            }
-        });
+    // Save movies to the database
+    @OnClick(R.id.ch_favou)
+    public void onViewClicked() {
+        if (save.isChecked()) {
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    // Insert the selected move to the database
+                    mDb.movieDao().insertMovie(movieData);
+                }
+            });
+            StatePrefsEditor.putBoolean("CheckState", true);
+            StatePrefsEditor.putInt("Movieid", movieData.getId());
+            StatePrefsEditor.commit();
+
+            Toast toast = Toast.makeText(DetailsActivity.this, "Saved", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
+            toast.show();
+
+        } else {
+
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    // Delete the selected move by it's position
+                    mDb.movieDao().deleteMovie(movieData);
+                }
+            });
+            StatePrefsEditor.putBoolean("CheckState", false);
+            StatePrefsEditor.putInt("Movieid", 0);
+            StatePrefsEditor.commit();
+
+            Toast toast = Toast.makeText(DetailsActivity.this, "Deleted", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
+            toast.show();
+        }
     }
 }

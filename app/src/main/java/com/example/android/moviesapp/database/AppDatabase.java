@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.example.android.moviesapp.model.MovieData;
 
-@Database(entities = {MovieData.class}, version = 8, exportSchema = false)
+@Database(entities = {MovieData.class}, version = 9, exportSchema = false)
 @TypeConverters({Convertor.class})
 public abstract class AppDatabase extends RoomDatabase {
 
