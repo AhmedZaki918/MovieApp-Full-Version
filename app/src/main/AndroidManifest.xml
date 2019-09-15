@@ -14,6 +14,14 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activity.FavouriteActivity"
+            android:label="@string/favourite">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.android.moviesapp.activity.MoviesActivity" />
+        </activity>
+        <activity
             android:name=".activity.SettingActivity"
             android:label="@string/settings_title">
             <meta-data
