@@ -99,7 +99,6 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
         });
 
         // Set the given text by ViewHolder object
-        holder.title.setText(currentItem.getTitle());
         holder.date.setText(currentItem.getReleaseDate());
     }
 
@@ -121,7 +120,6 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
 
         // Initialize the views
         private ImageView poster;
-        private TextView title;
         private TextView date;
 
         /**
@@ -136,7 +134,6 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
 
             // Find a reference for the views
             poster = itemView.findViewById(R.id.iv_poster);
-            title = itemView.findViewById(R.id.tv_title);
             date = itemView.findViewById(R.id.tv_date);
         }
     }
