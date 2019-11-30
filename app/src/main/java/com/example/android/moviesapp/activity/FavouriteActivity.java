@@ -2,6 +2,7 @@ package com.example.android.moviesapp.activity;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -40,7 +41,7 @@ public class FavouriteActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view_favo);
 
         // Set layout manager and RecyclerView
-        layoutManager = new GridLayoutManager(this, 2);
+        layoutManager = new GridLayoutManager(this, calculateNumberOfColumns(2));
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
@@ -73,6 +74,53 @@ public class FavouriteActivity extends AppCompatActivity {
 
 
         setupViewModel();
+    }
+
+
+    // Custom method to calculate number of columns for grid type recycler view
+    private int calculateNumberOfColumns(int base) {
+        int columns = base;
+        String screenSize = getScreenSizeCategory();
+
+        if (screenSize.equals("small")) {
+            if (base != 1) {
+                columns = columns - 1;
+            }
+        } else if (screenSize.equals("normal")) {
+            // Do nothing
+        } else if (screenSize.equals("large")) {
+            columns += 2;
+        } else if (screenSize.equals("xlarge")) {
+            columns += 3;
+        }
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            columns = (int) (columns * 2);
+        }
+
+        return columns;
+    }
+
+    // Custom method to get screen size category
+    private String getScreenSizeCategory() {
+        int screenLayout = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+
+        switch (screenLayout) {
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+                // small screens are at least 426dp x 320dp
+                return "small";
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                // normal screens are at least 470dp x 320dp
+                return "normal";
+            case Configuration.SCREENLAYOUT_SIZE_LARGE:
+                // large screens are at least 640dp x 480dp
+                return "large";
+            case Configuration.SCREENLAYOUT_SIZE_XLARGE:
+                // xlarge screens are at least 960dp x 720dp
+                return "xlarge";
+            default:
+                return "undefined";
+        }
     }
 
     // The operation of the ViewModel
