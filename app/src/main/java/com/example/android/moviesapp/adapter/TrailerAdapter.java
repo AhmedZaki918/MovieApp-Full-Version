@@ -8,11 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.moviesapp.R;
 import com.example.android.moviesapp.model.Trailers.DetailsTrailer;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubeThumbnailLoader;
+import com.google.android.youtube.player.YouTubeThumbnailView;
 
 import java.util.List;
 
@@ -70,8 +72,34 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
         // Get the position of the current list item
         final DetailsTrailer currentItem = detailsTrailers.get(position);
 
-        // Set the given text by ViewHolder object
-        holder.trailerName.setText(currentItem.getName());
+        /*  initialize the thumbnail image view , we need to pass Developer Key */
+        holder.videoThumbnailImageView.initialize(Constants.Api_key_youtube, new YouTubeThumbnailView.OnInitializedListener() {
+            @Override
+            public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, final YouTubeThumbnailLoader youTubeThumbnailLoader) {
+                //when initialization is sucess, set the video id to thumbnail to load
+                youTubeThumbnailLoader.setVideo(currentItem.getKey());
+
+                youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
+                    @Override
+                    public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
+                        //when thumbnail loaded successfully release the thumbnail loader as we are showing thumbnail in adapter
+                        youTubeThumbnailLoader.release();
+                    }
+
+                    @Override
+                    public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
+                        //print or show error when thumbnail load failed
+//                        Toast.makeText(context, "Youtube Thumbnail Error", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
+                //print or show error when initialization failed
+//                Toast.makeText(context, "Youtube Initialization Failure", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // Set on click listener on the trailer to go to youtube website
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
@@ -105,9 +133,8 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         // Initialize the views
-        ImageView playTrailer;
-        TextView trailerName;
         ConstraintLayout constraintLayout;
+        YouTubeThumbnailView videoThumbnailImageView;
 
         /**
          * Constructor for our ViewHolder. Within this constructor, we get a reference to our
@@ -120,9 +147,8 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
             super(itemView);
 
             // Find a reference for the views
-            playTrailer = itemView.findViewById(R.id.iv_play_trailer);
-            trailerName = itemView.findViewById(R.id.tv_trailer_name);
             constraintLayout = itemView.findViewById(R.id.constraint_layout);
+            videoThumbnailImageView = itemView.findViewById(R.id.video_thumbnail_image_view);
         }
     }
 }

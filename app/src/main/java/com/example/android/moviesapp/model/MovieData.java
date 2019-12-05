@@ -35,6 +35,13 @@ public class MovieData implements Parcelable {
     private String mPoster;
 
     /**
+     * The backdrop of the poster
+     */
+    @SerializedName("backdrop_path")
+    public String mBackdrop;
+
+
+    /**
      * The overview
      */
     @SerializedName("overview")
@@ -71,20 +78,22 @@ public class MovieData implements Parcelable {
     }
 
     // Constructor used for parcel
-    protected MovieData(Parcel parcel) {
-        id = parcel.readInt();
-        mTitle = parcel.readString();
-        mPoster = parcel.readString();
-        mOverview = parcel.readString();
-        mUserRating = parcel.readString();
-        mReleaseDate = parcel.readString();
+    protected MovieData(Parcel in) {
+        id = in.readInt();
+        mTitle = in.readString();
+        mPoster = in.readString();
+        mBackdrop = in.readString();
+        mOverview = in.readString();
+        mUserRating = in.readString();
+        mReleaseDate = in.readString();
+        results = in.createTypedArrayList(MovieData.CREATOR);
     }
 
     // Used when un-parceling our parcel (creating the object)
     public static final Creator<MovieData> CREATOR = new Creator<MovieData>() {
         @Override
-        public MovieData createFromParcel(Parcel parcel) {
-            return new MovieData(parcel);
+        public MovieData createFromParcel(Parcel in) {
+            return new MovieData(in);
         }
 
         @Override
@@ -93,6 +102,21 @@ public class MovieData implements Parcelable {
         }
     };
 
+
+    // Get the results array
+    public List<MovieData> getResults() {
+        return results;
+    }
+
+    // Setters
+    public void setResults(List<MovieData> results) {
+        this.results = results;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     // Return hashcode of object
     @Override
     public int describeContents() {
@@ -100,13 +124,16 @@ public class MovieData implements Parcelable {
     }
 
     // Write object values to parcel for storage
+    @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(mTitle);
         dest.writeString(mPoster);
+        dest.writeString(mBackdrop);
         dest.writeString(mOverview);
         dest.writeString(mUserRating);
         dest.writeString(mReleaseDate);
+        dest.writeTypedList(results);
     }
 
     // Get the original title
@@ -118,6 +145,7 @@ public class MovieData implements Parcelable {
     public String getPoster() {
         return mPoster;
     }
+
 
     // Get the overview of the movie
     public String getOverview() {
@@ -139,17 +167,7 @@ public class MovieData implements Parcelable {
         return id;
     }
 
-    // Get the results array
-    public List<MovieData> getResults() {
-        return results;
-    }
-
-    // Setters
-    public void setResults(List<MovieData> results) {
-        this.results = results;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public String getmBackdrop() {
+        return mBackdrop;
     }
 }

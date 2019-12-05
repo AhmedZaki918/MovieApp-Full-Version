@@ -25,6 +25,10 @@ public class DetailsTrailer {
         return name;
     }
 
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     public void setId(String id) {
         this.id = id;
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.android.moviesapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".activity.FavouriteActivity"
             android:label="@string/favourite">
@@ -28,9 +30,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.moviesapp.activity.MoviesActivity" />
         </activity>
-        <activity
-            android:name=".activity.DetailsActivity"
-            android:label="@string/detailsTrailers">
+        <activity android:name=".activity.DetailsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.moviesapp.activity.MoviesActivity" />

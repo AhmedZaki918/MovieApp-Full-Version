@@ -82,7 +82,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
         final MovieData currentItem = movieData.get(position);
 
         // String variables to get {title, poster url and release date}
-        String finalUrl = Constants.IMAGE_BASE_URL + currentItem.getPoster();
+        String finalUrl = Constants.IMAGE_BASE_URL_NORMAL + currentItem.getPoster();
 
         // Display the image by Picasso library
         Picasso.with(context).load(finalUrl)

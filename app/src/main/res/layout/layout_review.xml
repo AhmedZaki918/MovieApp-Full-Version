@@ -19,14 +19,15 @@
         tools:text="@string/review_test" />
 
     <TextView
+        android:textSize="18sp"
         android:id="@+id/tv_author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:textColor="@color/white"
-        android:textStyle="bold"
+        android:textColor="#BDBDBD"
+        android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

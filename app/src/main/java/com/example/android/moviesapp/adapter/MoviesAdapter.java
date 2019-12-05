@@ -72,7 +72,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         final MovieData currentItem = movieData.get(position);
 
         // String variable to get poster url
-        final String finalUrl = Constants.IMAGE_BASE_URL + currentItem.getPoster();
+        final String finalUrl = Constants.IMAGE_BASE_URL_NORMAL + currentItem.getPoster();
 
         // Display the image by Picasso library
         Picasso.with(context).load(finalUrl)

@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.android.moviesapp.adapter.Constants;
@@ -38,7 +39,7 @@ public class MoviesActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private GridLayoutManager layoutManager;
     private List<MovieData> movieData;
-
+    private ProgressBar mProgressBar;
     // For retrieve scroll position of the RecyclerView
     private static int index = -1;
     private static int top = -1;
@@ -53,6 +54,9 @@ public class MoviesActivity extends AppCompatActivity {
 
         // Find a reference to the {@link RecyclerView} in the layout
         recyclerView = findViewById(R.id.recycler_view);
+
+        //  Find a reference to ProgressBar
+        mProgressBar = findViewById(R.id.loading_indicator);
 
         // Set layout manager and RecyclerView
         layoutManager = new GridLayoutManager(this, calculateNumberOfColumns(2));
@@ -148,6 +152,8 @@ public class MoviesActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<MovieData> call, Response<MovieData> response) {
 
+                    mProgressBar.setVisibility(View.GONE);
+
                     if (response != null) {
                         MovieData resultsData = response.body();
                         if (resultsData != null) {
@@ -171,6 +177,8 @@ public class MoviesActivity extends AppCompatActivity {
             call.enqueue(new Callback<MovieData>() {
                 @Override
                 public void onResponse(Call<MovieData> call, Response<MovieData> response) {
+
+                    mProgressBar.setVisibility(View.GONE);
 
                     if (response != null) {
                         MovieData resultsData = response.body();

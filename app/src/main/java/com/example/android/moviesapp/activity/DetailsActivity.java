@@ -3,6 +3,7 @@ package com.example.android.moviesapp.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,8 +41,6 @@ public class DetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.iv_poster)
     ImageView poster;
-    @BindView(R.id.tv_originTitle)
-    TextView originalTitle;
     @BindView(R.id.tv_rating)
     TextView userRating;
     @BindView(R.id.tv_summary)
@@ -62,6 +61,7 @@ public class DetailsActivity extends AppCompatActivity {
     RecyclerView recyclerViewReviews;
     @BindView(R.id.imageView)
     ImageView imageView;
+
 
     // String variables to store the given value passed by the intent
     private String givenPoster;
@@ -90,6 +90,9 @@ public class DetailsActivity extends AppCompatActivity {
     private Boolean State;
     private int movId;
 
+    ActionBar actionBar;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +100,8 @@ public class DetailsActivity extends AppCompatActivity {
 
         // Prepare the code to use ButterKnife library
         ButterKnife.bind(this);
+
+        actionBar = getSupportActionBar();
 
         // Find a reference to the AppDatabase class
         mDb = AppDatabase.getInstance(getApplicationContext());
@@ -106,7 +111,7 @@ public class DetailsActivity extends AppCompatActivity {
         movieData = intent.getParcelableExtra(Constants.SOURCE);
 
         // Get all fields we need to show them in that activity By Intent
-        givenPoster = Constants.IMAGE_BASE_URL + movieData.getPoster();
+        givenPoster = Constants.IMAGE_BASE_URL_NORMAL + movieData.getmBackdrop();
         givenTitle = movieData.getTitle();
         givenRating = movieData.getUserRating();
         givenOverview = movieData.getOverview();
@@ -116,7 +121,7 @@ public class DetailsActivity extends AppCompatActivity {
         Picasso.with(this).load(givenPoster).into(poster);
 
         // Pass the given text by intent and display it in the TextView
-        originalTitle.setText(givenTitle);
+        actionBar.setTitle(givenTitle);
         userRating.setText(givenRating);
         overview.setText(givenOverview);
         releaseDate.setText(givenDate);
@@ -124,7 +129,7 @@ public class DetailsActivity extends AppCompatActivity {
         // Find a reference to the RecyclerView for the trailers
         recyclerTrailer = findViewById(R.id.recycler_view_trailer);
         // Set layout manager for RecyclerView
-        LinearLayoutManager lmTrailer = new LinearLayoutManager(this);
+        LinearLayoutManager lmTrailer = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true);
         recyclerTrailer.setLayoutManager(lmTrailer);
 
         // Find a reference to the DetailsTrailer model class

@@ -13,9 +13,14 @@ public final class Constants {
 
     // Create a full url instead of the given url path to show the poster of the movie
     private static final String URL_HEAD = "http://image.tmdb.org/t/p/";
-    private static final String SIZE = "w500/";
-    public static final String IMAGE_BASE_URL = URL_HEAD + SIZE;
+    private static final String SIZE = "w780";
+    private static final String SIZE_500 = "w500";
+    public static final String IMAGE_BASE_URL_ORIGINAL = URL_HEAD + SIZE;
+    public static final String IMAGE_BASE_URL_NORMAL = URL_HEAD + SIZE_500;
 
     // Api key
     public static final String Api_key = BuildConfig.THE_MOVIEDB_API_KEY;
+
+    // Api youtube key
+    public static final String Api_key_youtube = "AIzaSyAf2EOJerN_yYADZNBzTzmrf9slGHLFGtE";
 }
