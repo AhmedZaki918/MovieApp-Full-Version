@@ -8,25 +8,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.borjabravo.readmoretextview.ReadMoreTextView;
 import com.example.android.moviesapp.R;
 import com.example.android.moviesapp.adapter.Constants;
 import com.example.android.moviesapp.adapter.ReviewAdapter;
 import com.example.android.moviesapp.adapter.TrailerAdapter;
 import com.example.android.moviesapp.database.AppDatabase;
 import com.example.android.moviesapp.database.AppExecutors;
-import com.example.android.moviesapp.model.MovieData;
-import com.example.android.moviesapp.model.Reviews.DetailsReview;
+import com.example.android.moviesapp.model.AllData;
+import com.example.android.moviesapp.model.Reviews.Results;
 import com.example.android.moviesapp.model.Reviews.Reviews;
-import com.example.android.moviesapp.model.Trailers.DetailsTrailer;
-import com.example.android.moviesapp.model.Trailers.Trailers;
+import com.example.android.moviesapp.model.Details;
 import com.example.android.moviesapp.network.APIClient;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +39,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static java.lang.Double.parseDouble;
+
 public class DetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.iv_poster)
@@ -44,12 +48,12 @@ public class DetailsActivity extends AppCompatActivity {
     @BindView(R.id.tv_rating)
     TextView userRating;
     @BindView(R.id.tv_summary)
-    TextView overview;
+    ReadMoreTextView overview;
     @BindView(R.id.tv_release_date)
     TextView releaseDate;
     @BindView(R.id.ch_favou)
     CheckBox save;
-    @BindView(R.id.textView5)
+    @BindView(R.id.tv_overview_label)
     TextView textView5;
     @BindView(R.id.tv_trailer_label)
     TextView tvTrailerLabel;
@@ -61,13 +65,29 @@ public class DetailsActivity extends AppCompatActivity {
     RecyclerView recyclerViewReviews;
     @BindView(R.id.imageView)
     ImageView imageView;
+    @BindView(R.id.tv_revenue)
+    TextView revenue;
+    @BindView(R.id.tv_status)
+    TextView status;
+    @BindView(R.id.tv_budget)
+    TextView budget;
+    @BindView(R.id.tv_vote_count)
+    TextView voteCount;
+    @BindView(R.id.tv_popularity)
+    TextView popularity;
+    @BindView(R.id.tv_language)
+    TextView language;
+    @BindView(R.id.tv_no_reviews)
+    TextView noReviews;
+    @BindView(R.id.tv_no_trailers)
+    TextView noTrailers;
 
 
     // String variables to store the given value passed by the intent
-    private String givenPoster;
-    private String givenTitle;
-    private String givenRating;
-    private String givenOverview;
+    public String givenPoster;
+    public String givenTitle;
+    public String givenRating;
+    public String givenOverview;
     private String givenDate;
 
     // Initialize RecyclerView, Adapter, Api key and Model classes
@@ -75,20 +95,21 @@ public class DetailsActivity extends AppCompatActivity {
     private RecyclerView recyclerReview;
     private TrailerAdapter trailerAdapter;
     private ReviewAdapter reviewAdapter;
-    private List<DetailsTrailer> detailsTrailers;
-    private List<DetailsReview> detailsReviews;
+    private List<com.example.android.moviesapp.model.Trailers.Results> trailersResults;
+    private List<Results> reviewsResults;
     private String apiKey = Constants.Api_key;
 
     // Obj from model class
-    MovieData movieData;
+    AllData allData;
     // Member variable for the Database
     private AppDatabase mDb;
 
+
     // variables for SharedPreferences
-    private SharedPreferences StatePreferences;
+    public SharedPreferences StatePreferences;
     private SharedPreferences.Editor StatePrefsEditor;
-    private Boolean State;
-    private int movId;
+    public Boolean State;
+    public int movId;
 
     ActionBar actionBar;
 
@@ -108,14 +129,18 @@ public class DetailsActivity extends AppCompatActivity {
         // Prepare the intent to use it
         Intent intent = getIntent();
         // Get the data from the model class
-        movieData = intent.getParcelableExtra(Constants.SOURCE);
+        allData = intent.getParcelableExtra(Constants.SOURCE);
 
         // Get all fields we need to show them in that activity By Intent
-        givenPoster = Constants.IMAGE_BASE_URL_NORMAL + movieData.getmBackdrop();
-        givenTitle = movieData.getTitle();
-        givenRating = movieData.getUserRating();
-        givenOverview = movieData.getOverview();
-        givenDate = movieData.getReleaseDate();
+        givenPoster = Constants.IMAGE_BASE_URL_NORMAL + allData.getmBackdrop();
+        givenTitle = allData.getTitle();
+        givenRating = allData.getUserRating();
+        givenOverview = allData.getOverview();
+        givenDate = allData.getReleaseDate();
+//        Log.e("DetailsActivity", "Budget = " + details.getBudget());
+
+        givenPoster = Constants.IMAGE_BASE_URL_NORMAL + allData.getmBackdrop();
+//        Log.e("DetailsActivity", "Backdrop = " + allData.getmBackdrop());
 
         // Display the poster of the selected movie By Picasso library
         Picasso.with(this).load(givenPoster).into(poster);
@@ -132,8 +157,8 @@ public class DetailsActivity extends AppCompatActivity {
         LinearLayoutManager lmTrailer = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true);
         recyclerTrailer.setLayoutManager(lmTrailer);
 
-        // Find a reference to the DetailsTrailer model class
-        detailsTrailers = new ArrayList<>();
+        // Find a reference to the Results model class
+        trailersResults = new ArrayList<>();
 
         // Find a reference to the RecyclerView for the reviews
         recyclerReview = findViewById(R.id.recycler_view_reviews);
@@ -141,19 +166,19 @@ public class DetailsActivity extends AppCompatActivity {
         LinearLayoutManager lmReview = new LinearLayoutManager(this);
         recyclerReview.setLayoutManager(lmReview);
 
-        // Find a reference to the DetailsReview model class
-        detailsReviews = new ArrayList<>();
+        // Find a reference to the Results model class
+        trailersResults = new ArrayList<>();
 
         // Display the data related of trailers and reviews by getId method in the model class
-        displayTrailers(movieData.getId());
-        displayReviews(movieData.getId());
+        displayTrailers(allData.getId());
+        displayReviews(allData.getId());
 
         // To save the state of CheckBox Favourite button (Check And UnChecked)
         StatePreferences = getSharedPreferences("ChkPrefs", MODE_PRIVATE);
         StatePrefsEditor = StatePreferences.edit();
         State = StatePreferences.getBoolean("CheckState", false);
         movId = StatePreferences.getInt("Movieid", 0);
-        if (State == true && movId == movieData.getId()) {
+        if (State && movId == allData.getId()) {
             save.setChecked(true);
         }
     }
@@ -161,18 +186,41 @@ public class DetailsActivity extends AppCompatActivity {
     // Get the trailers by Retrofit library
     public void displayTrailers(int id) {
 
-        Call<Trailers> call = APIClient.getInstance().getApi().get_Movie_Trailers(id, apiKey);
-        call.enqueue(new Callback<Trailers>() {
+        Call<Details> call = APIClient.getInstance().getApi().get_Movie_Trailers(id, apiKey, "videos");
+        call.enqueue(new Callback<Details>() {
             @Override
-            public void onResponse(Call<Trailers> call, Response<Trailers> response) {
+            public void onResponse(Call<Details> call, Response<Details> response) {
 
-                detailsTrailers = response.body().getResults();
-                trailerAdapter = new TrailerAdapter(DetailsActivity.this, detailsTrailers);
+                if (response.body() != null) {
+                    trailersResults = response.body().videos.getResults();
+
+                    String budgetValue = response.body().getBudget();
+                    budgetValue = formatNumber(parseDouble(budgetValue));
+                    budget.setText(String.format("%s$", budgetValue));
+
+                    String revenueValue = response.body().getRevenue();
+                    revenueValue = formatNumber(parseDouble(revenueValue));
+                    revenue.setText(String.format("%s$", revenueValue));
+
+                    status.setText(response.body().getStatus());
+                    voteCount.setText(response.body().getVoteCount());
+                    popularity.setText(response.body().getPopularity());
+                    language.setText(response.body().getLanguage());
+
+
+                }
+                trailerAdapter = new TrailerAdapter(DetailsActivity.this, trailersResults);
+
+                if (trailerAdapter.getItemCount() == 0) {
+                    tvTrailerLabel.setVisibility(View.GONE);
+                    noTrailers.setVisibility(View.VISIBLE);
+
+                }
                 recyclerTrailer.setAdapter(trailerAdapter);
             }
 
             @Override
-            public void onFailure(Call<Trailers> call, Throwable t) {
+            public void onFailure(Call<Details> call, Throwable t) {
                 Toast.makeText(DetailsActivity.this, getString(R.string.error_fetch), Toast.LENGTH_SHORT).show();
             }
         });
@@ -186,8 +234,15 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Reviews> call, Response<Reviews> response) {
 
-                detailsReviews = response.body().getResults();
-                reviewAdapter = new ReviewAdapter(DetailsActivity.this, detailsReviews);
+                if (response.body() != null) {
+                    reviewsResults = response.body().getResults();
+                }
+                reviewAdapter = new ReviewAdapter(DetailsActivity.this, reviewsResults);
+
+                if (reviewAdapter.getItemCount() == 0) {
+                    tvReviewsLabel.setVisibility(View.GONE);
+                    noReviews.setVisibility(View.VISIBLE);
+                }
                 recyclerReview.setAdapter(reviewAdapter);
             }
 
@@ -206,11 +261,11 @@ public class DetailsActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     // Insert the selected move to the database
-                    mDb.movieDao().insertMovie(movieData);
+                    mDb.movieDao().insertMovie(allData);
                 }
             });
             StatePrefsEditor.putBoolean("CheckState", true);
-            StatePrefsEditor.putInt("Movieid", movieData.getId());
+            StatePrefsEditor.putInt("Movieid", allData.getId());
             StatePrefsEditor.commit();
 
             Toast toast = Toast.makeText(DetailsActivity.this, "Saved", Toast.LENGTH_SHORT);
@@ -223,7 +278,7 @@ public class DetailsActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     // Delete the selected move by it's position
-                    mDb.movieDao().deleteMovie(movieData);
+                    mDb.movieDao().deleteMovie(allData);
                 }
             });
             StatePrefsEditor.putBoolean("CheckState", false);
@@ -234,5 +289,11 @@ public class DetailsActivity extends AppCompatActivity {
             toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
             toast.show();
         }
+    }
+
+    // Add thousand separators in number
+    private String formatNumber(double number) {
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(number);
     }
 }

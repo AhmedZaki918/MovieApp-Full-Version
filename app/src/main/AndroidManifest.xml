@@ -25,7 +25,8 @@
         </activity>
         <activity
             android:name=".activity.SettingActivity"
-            android:label="@string/settings_title">
+            android:label="@string/settings_title"
+            android:theme="@style/PreferenceScreen">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.moviesapp.activity.MoviesActivity" />

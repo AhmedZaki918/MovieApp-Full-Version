@@ -2,20 +2,24 @@ package com.example.android.moviesapp.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.borjabravo.readmoretextview.ReadMoreTextView;
 import com.example.android.moviesapp.R;
-import com.example.android.moviesapp.model.Reviews.DetailsReview;
+import com.example.android.moviesapp.activity.DetailsActivity;
+import com.example.android.moviesapp.model.Reviews.Results;
 
 import java.util.List;
 
 
 /**
  * An {@link ReviewAdapter} knows how to create a list item layout for each movie
- * in the data source (a list of {@link DetailsReview} objects).
+ * in the data source (a list of {@link Results} objects).
  * <p>
  * These list item layouts will be provided to an adapter view like GridView
  * to be displayed to the user.
@@ -23,12 +27,12 @@ import java.util.List;
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
 
     Context context;
-    private List<DetailsReview> detailsReviews;
+    private List<Results> results;
 
     // Constructor for our ReviewAdapter
-    public ReviewAdapter(Context context, List<DetailsReview> detailsReviews) {
+    public ReviewAdapter(Context context, List<Results> results) {
         this.context = context;
-        this.detailsReviews = detailsReviews;
+        this.results = results;
     }
 
     /**
@@ -65,7 +69,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         // Get the position of the current list item
-        DetailsReview currentItem = detailsReviews.get(position);
+        Results currentItem = results.get(position);
 
         // Set the given text by ViewHolder object
         holder.reviews.setText(currentItem.getContent());
@@ -80,7 +84,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
      */
     @Override
     public int getItemCount() {
-        return detailsReviews != null ? detailsReviews.size() : 0;
+        return results != null ? results.size() : 0;
     }
 
     /**
@@ -89,8 +93,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         // Initialize the views
-        TextView reviews;
+        ReadMoreTextView reviews;
         TextView author;
+        TextView reviewsLabel;
 
         /**
          * Constructor for our ViewHolder. Within this constructor, we get a reference to our
@@ -105,6 +110,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             // Find a reference for the views
             reviews = itemView.findViewById(R.id.tv_reviews);
             author = itemView.findViewById(R.id.tv_author);
+            reviewsLabel = itemView.findViewById(R.id.tv_reviews_label);
         }
     }
 }

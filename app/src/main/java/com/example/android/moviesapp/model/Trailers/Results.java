@@ -2,7 +2,7 @@ package com.example.android.moviesapp.model.Trailers;
 
 import com.google.gson.annotations.SerializedName;
 
-public class DetailsTrailer {
+public class Results {
 
     // Initialize variables
     @SerializedName("id")

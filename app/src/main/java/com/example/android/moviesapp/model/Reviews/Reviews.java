@@ -10,14 +10,14 @@ public class Reviews {
     @SerializedName("id")
     private int id;
     @SerializedName("results")
-    private List<DetailsReview> results = null;
+    private List<Results> results = null;
 
     // Getters and Setters
     public int getId() {
         return id;
     }
 
-    public List<DetailsReview> getResults() {
+    public List<Results> getResults() {
         return results;
     }
 

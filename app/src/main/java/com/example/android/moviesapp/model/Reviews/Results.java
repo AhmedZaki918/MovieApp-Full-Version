@@ -2,7 +2,7 @@ package com.example.android.moviesapp.model.Reviews;
 
 import com.google.gson.annotations.SerializedName;
 
-public class DetailsReview {
+public class Results {
 
     // Initialize variables
     @SerializedName("author")

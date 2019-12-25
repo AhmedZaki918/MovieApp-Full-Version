@@ -8,10 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.android.moviesapp.R;
-import com.example.android.moviesapp.model.Trailers.DetailsTrailer;
+import com.example.android.moviesapp.model.Trailers.Results;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
@@ -20,7 +19,7 @@ import java.util.List;
 
 /**
  * An {@link TrailerAdapter} knows how to create a list item layout for each movie
- * in the data source (a list of {@link DetailsTrailer} objects).
+ * in the data source (a list of {@link Results} objects).
  * <p>
  * These list item layouts will be provided to an adapter view like GridView
  * to be displayed to the user.
@@ -28,12 +27,12 @@ import java.util.List;
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHolder> {
 
     Context context;
-    private List<DetailsTrailer> detailsTrailers;
+    private List<Results> results;
 
     // Constructor for our TrailerAdapter
-    public TrailerAdapter(Context context, List<DetailsTrailer> detailsTrailers) {
+    public TrailerAdapter(Context context, List<Results> results) {
         this.context = context;
-        this.detailsTrailers = detailsTrailers;
+        this.results = results;
     }
 
     /**
@@ -70,7 +69,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         // Get the position of the current list item
-        final DetailsTrailer currentItem = detailsTrailers.get(position);
+        final Results currentItem = results.get(position);
 
         /*  initialize the thumbnail image view , we need to pass Developer Key */
         holder.videoThumbnailImageView.initialize(Constants.Api_key_youtube, new YouTubeThumbnailView.OnInitializedListener() {
@@ -124,7 +123,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
      */
     @Override
     public int getItemCount() {
-        return detailsTrailers != null ? detailsTrailers.size() : 0;
+        return results != null ? results.size() : 0;
     }
 
     /**

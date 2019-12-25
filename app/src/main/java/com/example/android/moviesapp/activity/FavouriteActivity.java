@@ -16,7 +16,7 @@ import com.example.android.moviesapp.adapter.FavouriteAdapter;
 import com.example.android.moviesapp.database.AppDatabase;
 import com.example.android.moviesapp.database.AppExecutors;
 import com.example.android.moviesapp.database.MainViewModel;
-import com.example.android.moviesapp.model.MovieData;
+import com.example.android.moviesapp.model.AllData;
 
 import java.util.List;
 
@@ -62,9 +62,9 @@ public class FavouriteActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         int position = viewHolder.getAdapterPosition();
-                        List<MovieData> movieData = favouriteAdapter.getMovieData();
+                        List<AllData> allData = favouriteAdapter.getAllData();
                         // Call deleteMovie in the movieDao at that position
-                        mDb.movieDao().deleteMovie(movieData.get(position));
+                        mDb.movieDao().deleteMovie(allData.get(position));
 
                     }
                 });
@@ -126,10 +126,10 @@ public class FavouriteActivity extends AppCompatActivity {
     // The operation of the ViewModel
     public void setupViewModel() {
         MainViewModel viewModel = ViewModelProviders.of(FavouriteActivity.this).get(MainViewModel.class);
-        viewModel.getMoviesData().observe(FavouriteActivity.this, new Observer<List<MovieData>>() {
+        viewModel.getMoviesData().observe(FavouriteActivity.this, new Observer<List<AllData>>() {
             @Override
-            public void onChanged(@Nullable List<MovieData> movieData) {
-                favouriteAdapter.setMovieData(movieData);
+            public void onChanged(@Nullable List<AllData> allData) {
+                favouriteAdapter.setAllData(allData);
             }
         });
     }

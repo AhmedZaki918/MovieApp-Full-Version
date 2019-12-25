@@ -11,6 +11,6 @@
     <item
         android:id="@+id/favourite_settings"
         android:orderInCategory="1"
-        android:title="Favourite" />
+        android:title="@string/favourite" />
 
 </menu>

@@ -7,9 +7,9 @@ import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.android.moviesapp.model.MovieData;
+import com.example.android.moviesapp.model.AllData;
 
-@Database(entities = {MovieData.class}, version = 10, exportSchema = false)
+@Database(entities = {AllData.class}, version = 10, exportSchema = false)
 @TypeConverters({Convertor.class})
 public abstract class AppDatabase extends RoomDatabase {
 

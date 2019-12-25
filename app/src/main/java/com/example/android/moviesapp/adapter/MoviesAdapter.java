@@ -7,10 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.android.moviesapp.R;
 import com.example.android.moviesapp.activity.DetailsActivity;
-import com.example.android.moviesapp.model.MovieData;
+import com.example.android.moviesapp.model.AllData;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 
 /**
  * An {@link MoviesAdapter} knows how to create a list item layout for each movie
- * in the data source (a list of {@link MovieData} objects).
+ * in the data source (a list of {@link AllData} objects).
  * <p>
  * These list item layouts will be provided to an adapter view like GridView
  * to be displayed to the user.
@@ -27,12 +28,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
 
 
     Context context;
-    private List<MovieData> movieData;
+    private List<AllData> allData;
 
     // Constructor for our MoviesAdapter
-    public MoviesAdapter(Context context, List<MovieData> movieData) {
+    public MoviesAdapter(Context context, List<AllData> allData) {
         this.context = context;
-        this.movieData = movieData;
+        this.allData = allData;
     }
 
     /**
@@ -69,7 +70,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         // Get the position of the current list item
-        final MovieData currentItem = movieData.get(position);
+        final AllData currentItem = allData.get(position);
+
+        String title = currentItem.getTitle();
+        holder.movieTitle.setText(title);
+
+        String rating = currentItem.getUserRating();
+        holder.movieRate.setText(rating);
 
         // String variable to get poster url
         final String finalUrl = Constants.IMAGE_BASE_URL_NORMAL + currentItem.getPoster();
@@ -97,7 +104,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
      */
     @Override
     public int getItemCount() {
-        return movieData != null ? movieData.size() : 0;
+        return allData != null ? allData.size() : 0;
     }
 
     /**
@@ -105,8 +112,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
      */
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        // Initialize the view
+        // Initialize the views
         ImageView moviePoster;
+        TextView movieTitle;
+        TextView movieRate;
 
         /**
          * Constructor for our ViewHolder. Within this constructor, we get a reference to our
@@ -120,6 +129,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
 
             // Find a reference for the views
             moviePoster = itemView.findViewById(R.id.iv_poster);
+            movieTitle = itemView.findViewById(R.id.tv_movie_title);
+            movieRate = itemView.findViewById(R.id.tv_rating);
         }
     }
 }

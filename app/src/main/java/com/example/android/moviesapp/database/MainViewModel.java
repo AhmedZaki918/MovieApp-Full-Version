@@ -5,17 +5,17 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
-import com.example.android.moviesapp.model.MovieData;
+import com.example.android.moviesapp.model.AllData;
 
 import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
 
     /**
-     * Wrapping the <list<MovieData> with LiveData
+     * Wrapping the <list<AllData> with LiveData
      * to avoid requiring the data every time
      **/
-    private LiveData<List<MovieData>> moviesData;
+    private LiveData<List<AllData>> moviesData;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -23,7 +23,7 @@ public class MainViewModel extends AndroidViewModel {
         moviesData = dataBase.movieDao().loadAllResults();
     }
 
-    public LiveData<List<MovieData>> getMoviesData() {
+    public LiveData<List<AllData>> getMoviesData() {
         return moviesData;
     }
 }

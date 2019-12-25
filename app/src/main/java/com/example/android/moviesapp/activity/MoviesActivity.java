@@ -13,11 +13,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.moviesapp.adapter.Constants;
 import com.example.android.moviesapp.adapter.MoviesAdapter;
-import com.example.android.moviesapp.model.MovieData;
+import com.example.android.moviesapp.model.AllData;
 import com.example.android.moviesapp.R;
 import com.example.android.moviesapp.network.APIClient;
 
@@ -38,8 +39,9 @@ public class MoviesActivity extends AppCompatActivity {
     private MoviesAdapter mAdapter;
     private RecyclerView recyclerView;
     private GridLayoutManager layoutManager;
-    private List<MovieData> movieData;
+    private List<AllData> allData;
     private ProgressBar mProgressBar;
+    private TextView movieCategory;
     // For retrieve scroll position of the RecyclerView
     private static int index = -1;
     private static int top = -1;
@@ -49,8 +51,10 @@ public class MoviesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Find a reference to the List<MovieData>
-        movieData = new ArrayList<>();
+        movieCategory = findViewById(R.id.tv_category_name);
+
+        // Find a reference to the List<AllData>
+        allData = new ArrayList<>();
 
         // Find a reference to the {@link RecyclerView} in the layout
         recyclerView = findViewById(R.id.recycler_view);
@@ -61,7 +65,6 @@ public class MoviesActivity extends AppCompatActivity {
         // Set layout manager and RecyclerView
         layoutManager = new GridLayoutManager(this, calculateNumberOfColumns(2));
         recyclerView.setLayoutManager(layoutManager);
-
 
         // Call display user preferences method
         displayUserPreferences();
@@ -147,25 +150,27 @@ public class MoviesActivity extends AppCompatActivity {
         // Check the user preferences to run the selected url
         if (sortBy.equals(getString(R.string.settings_sort_by_highest_rated_value))) {
 
-            Call<MovieData> call = APIClient.getInstance().getApi().get_top_rated(apiKey);
-            call.enqueue(new Callback<MovieData>() {
+            movieCategory.setText(R.string.settings_sort_by_popularity_label);
+
+            Call<AllData> call = APIClient.getInstance().getApi().get_top_rated(apiKey);
+            call.enqueue(new Callback<AllData>() {
                 @Override
-                public void onResponse(Call<MovieData> call, Response<MovieData> response) {
+                public void onResponse(Call<AllData> call, Response<AllData> response) {
 
                     mProgressBar.setVisibility(View.GONE);
 
                     if (response != null) {
-                        MovieData resultsData = response.body();
+                        AllData resultsData = response.body();
                         if (resultsData != null) {
-                            movieData = resultsData.getResults();
-                            mAdapter = new MoviesAdapter(MoviesActivity.this, movieData);
+                            allData = resultsData.getResults();
+                            mAdapter = new MoviesAdapter(MoviesActivity.this, allData);
                             recyclerView.setAdapter(mAdapter);
                         }
                     }
                 }
 
                 @Override
-                public void onFailure(Call<MovieData> call, Throwable t) {
+                public void onFailure(Call<AllData> call, Throwable t) {
                     Toast.makeText(MoviesActivity.this, getString(R.string.error_fetch), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -173,25 +178,57 @@ public class MoviesActivity extends AppCompatActivity {
             // Check the user preferences to run the selected url
         } else if (sortBy.equals(getString(R.string.settings_sort_by_popularity_value))) {
 
-            Call<MovieData> call = APIClient.getInstance().getApi().get_popular(apiKey);
-            call.enqueue(new Callback<MovieData>() {
+            movieCategory.setText(R.string.settings_sort_by_highest_rated_label);
+
+            Call<AllData> call = APIClient.getInstance().getApi().get_popular(apiKey);
+            call.enqueue(new Callback<AllData>() {
                 @Override
-                public void onResponse(Call<MovieData> call, Response<MovieData> response) {
+                public void onResponse(Call<AllData> call, Response<AllData> response) {
 
                     mProgressBar.setVisibility(View.GONE);
 
                     if (response != null) {
-                        MovieData resultsData = response.body();
+                        AllData resultsData = response.body();
                         if (resultsData != null) {
-                            movieData = resultsData.getResults();
-                            mAdapter = new MoviesAdapter(MoviesActivity.this, movieData);
+                            allData = resultsData.getResults();
+                            mAdapter = new MoviesAdapter(MoviesActivity.this, allData);
                             recyclerView.setAdapter(mAdapter);
                         }
                     }
                 }
 
                 @Override
-                public void onFailure(Call<MovieData> call, Throwable t) {
+                public void onFailure(Call<AllData> call, Throwable t) {
+                    Toast.makeText(MoviesActivity.this, getString(R.string.error_fetch), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        // Check the user preferences to run the selected url
+        else if (sortBy.equals(getString(R.string.settings_sort_by_now_playing_value))) {
+
+            movieCategory.setText(R.string.settings_sort_by_now_playing_label);
+
+
+            Call<AllData> call = APIClient.getInstance().getApi().get_now_playing(apiKey);
+            call.enqueue(new Callback<AllData>() {
+                @Override
+                public void onResponse(Call<AllData> call, Response<AllData> response) {
+
+                    mProgressBar.setVisibility(View.GONE);
+
+                    if (response != null) {
+                        AllData resultsData = response.body();
+                        if (resultsData != null) {
+                            allData = resultsData.getResults();
+                            mAdapter = new MoviesAdapter(MoviesActivity.this, allData);
+                            recyclerView.setAdapter(mAdapter);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AllData> call, Throwable t) {
                     Toast.makeText(MoviesActivity.this, getString(R.string.error_fetch), Toast.LENGTH_SHORT).show();
                 }
             });

@@ -1,7 +1,7 @@
 package com.example.android.moviesapp.model;
 
 /* **
- * An {@link MovieData} object contains information related to a movie.
+ * An {@link AllData} object contains information related to a movie.
  */
 
 import android.arch.persistence.room.Entity;
@@ -16,7 +16,7 @@ import java.util.List;
 
 
 @Entity(tableName = "movie")
-public class MovieData implements Parcelable {
+public class AllData implements Parcelable {
 
     @PrimaryKey(autoGenerate = false)
     @SerializedName("id")
@@ -40,7 +40,6 @@ public class MovieData implements Parcelable {
     @SerializedName("backdrop_path")
     public String mBackdrop;
 
-
     /**
      * The overview
      */
@@ -60,12 +59,12 @@ public class MovieData implements Parcelable {
     private String mReleaseDate;
 
     @SerializedName("results")
-    private List<MovieData> results = null;
+    private List<AllData> results = null;
 
     /**
-     * Constructs a new {@link MovieData} object.
+     * Constructs a new {@link AllData} object.
      */
-    public MovieData(String mTitle, String mPoster, String mOverview, String mUserRating, String mReleaseDate) {
+    public AllData(String mTitle, String mPoster, String mOverview, String mUserRating, String mReleaseDate) {
         this.mTitle = mTitle;
         this.mPoster = mPoster;
         this.mOverview = mOverview;
@@ -74,11 +73,11 @@ public class MovieData implements Parcelable {
     }
 
     @Ignore
-    public MovieData() {
+    public AllData() {
     }
 
     // Constructor used for parcel
-    protected MovieData(Parcel in) {
+    protected AllData(Parcel in) {
         id = in.readInt();
         mTitle = in.readString();
         mPoster = in.readString();
@@ -86,30 +85,30 @@ public class MovieData implements Parcelable {
         mOverview = in.readString();
         mUserRating = in.readString();
         mReleaseDate = in.readString();
-        results = in.createTypedArrayList(MovieData.CREATOR);
+        results = in.createTypedArrayList(AllData.CREATOR);
     }
 
     // Used when un-parceling our parcel (creating the object)
-    public static final Creator<MovieData> CREATOR = new Creator<MovieData>() {
+    public static final Creator<AllData> CREATOR = new Creator<AllData>() {
         @Override
-        public MovieData createFromParcel(Parcel in) {
-            return new MovieData(in);
+        public AllData createFromParcel(Parcel in) {
+            return new AllData(in);
         }
 
         @Override
-        public MovieData[] newArray(int size) {
-            return new MovieData[size];
+        public AllData[] newArray(int size) {
+            return new AllData[size];
         }
     };
 
 
     // Get the results array
-    public List<MovieData> getResults() {
+    public List<AllData> getResults() {
         return results;
     }
 
     // Setters
-    public void setResults(List<MovieData> results) {
+    public void setResults(List<AllData> results) {
         this.results = results;
     }
 

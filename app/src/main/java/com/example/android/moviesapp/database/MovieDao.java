@@ -7,7 +7,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import com.example.android.moviesapp.model.MovieData;
+import com.example.android.moviesapp.model.AllData;
 
 import java.util.List;
 
@@ -15,11 +15,11 @@ import java.util.List;
 public interface MovieDao {
 
     @Query("SELECT * FROM movie")
-    LiveData<List<MovieData>> loadAllResults();
+    LiveData<List<AllData>> loadAllResults();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertMovie(MovieData movieData);
+    void insertMovie(AllData allData);
 
     @Delete
-    void deleteMovie(MovieData movieData);
+    void deleteMovie(AllData allData);
 }

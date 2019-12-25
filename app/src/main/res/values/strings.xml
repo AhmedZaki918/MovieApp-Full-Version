@@ -13,7 +13,7 @@
     <string name="summary">Overview</string>
 
     // Label of the DetailsActivity layout
-    <string name="detailsTrailers">Details</string>
+    <string name="results">Details</string>
 
     <string name="settings_menu_item">Settings</string>
     <string name="settings_title">Custom Settings</string>
@@ -31,6 +31,10 @@
     <string name="settings_sort_by_popularity_label">Most popular</string>
     <string name="settings_sort_by_popularity_value" translatable="false">popularity.desc</string>
 
+    <!-- Label for sort-by now_playing option -->
+    <string name="settings_sort_by_now_playing_label">Now playing</string>
+    <string name="settings_sort_by_now_playing_value" translatable="false">release_date.desc</string>
+
     <!-- For test only -->
     <string name="review_test">Whether a movie is a rotten tomato or a brilliant work of art, if people are watching it,
         its worth critiquing.A decent movie review should entertain, persuade and inform,
@@ -42,6 +46,18 @@
     <string name="reviews_label">Reviews</string>
     <string name="mikl">Mikl</string>
     <string name="error_fetch">Error fetching the data</string>
+    <string name="_10">/ 10</string>
+    <string name="status">Status</string>
+    <string name="more_info">More Info</string>
+    <string name="budget">Budget</string>
+    <string name="revenue">Revenue</string>
+    <string name="title">Popularity</string>
+    <string name="language">Language</string>
+    <string name="adult">Title</string>
+    <string name="adult_no">Nothing</string>
+    <string name="adult_yes">available</string>
+    <string name="no_reviews_found">No reviews found yet.</string>
+    <string name="no_trailers_found_yet">No trailers found yet.</string>
 
 
 </resources>

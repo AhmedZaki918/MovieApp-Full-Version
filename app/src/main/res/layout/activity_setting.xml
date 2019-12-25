@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?><!-- Layout for our Settings Activity, containing a Preference Fragment -->
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:name="com.example.android.moviesapp.activity.SettingActivity$MoviesPreferenceFragment"
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.android.moviesapp.activity.SettingActivity"></fragment>
+    android:background="#263238">
+
+    <fragment xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/fragment"
+        android:name="com.example.android.moviesapp.activity.SettingActivity$MoviesPreferenceFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.example.android.moviesapp.activity.SettingActivity" />
+
+</LinearLayout>
+
+
+

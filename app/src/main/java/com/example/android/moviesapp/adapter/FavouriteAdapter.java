@@ -7,11 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.android.moviesapp.R;
 import com.example.android.moviesapp.activity.DetailsActivity;
-import com.example.android.moviesapp.model.MovieData;
+import com.example.android.moviesapp.model.AllData;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.List;
 
 /**
  * An {@link FavouriteAdapter} knows how to create a list item layout for each movie
- * in the data source (a list of {@link MovieData} objects).
+ * in the data source (a list of {@link AllData} objects).
  * <p>
  * These list item layouts will be provided to an adapter view like GridView
  * to be displayed to the user.
@@ -27,21 +26,21 @@ import java.util.List;
 public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.ViewHolder> {
 
     Context context;
-    private List<MovieData> movieData;
+    private List<AllData> allData;
 
     // Constructor for our FavouriteAdapter
     public FavouriteAdapter(Context context) {
         this.context = context;
     }
 
-    // Getter method for List<MovieData>
-    public List<MovieData> getMovieData() {
-        return movieData;
+    // Getter method for List<AllData>
+    public List<AllData> getAllData() {
+        return allData;
     }
 
-    // Setter method for List<MovieData>
-    public void setMovieData(List<MovieData> movieData) {
-        this.movieData = movieData;
+    // Setter method for List<AllData>
+    public void setAllData(List<AllData> allData) {
+        this.allData = allData;
         notifyDataSetChanged();
     }
 
@@ -79,7 +78,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         // Get the position of the current list item
-        final MovieData currentItem = movieData.get(position);
+        final AllData currentItem = allData.get(position);
 
         // String variables to get {title, poster url and release date}
         String finalUrl = Constants.IMAGE_BASE_URL_NORMAL + currentItem.getPoster();
@@ -98,8 +97,8 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
             }
         });
 
-        // Set the given text by ViewHolder object
-        holder.date.setText(currentItem.getReleaseDate());
+//        // Set the given text by ViewHolder object
+//        holder.date.setText(currentItem.getReleaseDate());
     }
 
     /**
@@ -110,7 +109,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
      */
     @Override
     public int getItemCount() {
-        return movieData != null ? movieData.size() : 0;
+        return allData != null ? allData.size() : 0;
     }
 
     /**
@@ -120,7 +119,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
 
         // Initialize the views
         private ImageView poster;
-        private TextView date;
+//        private TextView date;
 
         /**
          * Constructor for our ViewHolder. Within this constructor, we get a reference to our
@@ -134,7 +133,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
 
             // Find a reference for the views
             poster = itemView.findViewById(R.id.iv_poster);
-            date = itemView.findViewById(R.id.tv_date);
+//            date = itemView.findViewById(R.id.tv_date);
         }
     }
 }

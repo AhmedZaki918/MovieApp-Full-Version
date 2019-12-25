@@ -20,6 +20,7 @@
 
 
         <ImageView
+            android:adjustViewBounds="true"
             android:id="@+id/iv_poster"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,23 +28,5 @@
 
     </android.support.v7.widget.CardView>
 
-
-    <TextView
-        android:id="@+id/tv_date"
-        style="@style/LayoutFavourite"
-        android:layout_marginTop="4dp"
-        android:textColor="#BDBDBD"
-        app:layout_constraintStart_toEndOf="@+id/imageView5"
-        app:layout_constraintTop_toBottomOf="@+id/cardView"
-        tools:text="25-5-2019" />
-
-
-    <ImageView
-        android:id="@+id/imageView5"
-        style="@style/LayoutFavourite"
-        android:layout_marginTop="4dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView"
-        app:srcCompat="@drawable/baseline_date_range_white_18" />
 
 </android.support.constraint.ConstraintLayout>
