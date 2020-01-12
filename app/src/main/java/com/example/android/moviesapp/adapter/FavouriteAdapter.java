@@ -2,15 +2,23 @@ package com.example.android.moviesapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.android.moviesapp.R;
 import com.example.android.moviesapp.activity.DetailsActivity;
+import com.example.android.moviesapp.database.AppDatabase;
+import com.example.android.moviesapp.database.AppExecutors;
 import com.example.android.moviesapp.model.AllData;
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -25,22 +33,24 @@ import java.util.List;
  */
 public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.ViewHolder> {
 
-    Context context;
-    private List<AllData> allData;
+    private Context mContext;
+    private List<AllData> mAllDataList;
+    private AppDatabase mDb;
 
     // Constructor for our FavouriteAdapter
-    public FavouriteAdapter(Context context) {
-        this.context = context;
+    public FavouriteAdapter(Context mContext) {
+        this.mContext = mContext;
     }
 
     // Getter method for List<AllData>
+    @SuppressWarnings("WeakerAccess")
     public List<AllData> getAllData() {
-        return allData;
+        return mAllDataList;
     }
 
     // Setter method for List<AllData>
     public void setAllData(List<AllData> allData) {
-        this.allData = allData;
+        this.mAllDataList = allData;
         notifyDataSetChanged();
     }
 
@@ -52,15 +62,15 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
      * @param i         Id for the list item layout
      * @return A new ViewHolder that holds the View for each list item
      */
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
 
         Context context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.layout_favourite;
         LayoutInflater inflater = LayoutInflater.from(context);
-        boolean shouldAttachToParentImmediately = false;
 
-        View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
+        View view = inflater.inflate(layoutIdForListItem, viewGroup, false);
         return new ViewHolder(view);
     }
 
@@ -75,30 +85,43 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
 
         // Get the position of the current list item
-        final AllData currentItem = allData.get(position);
+        final AllData currentItem = mAllDataList.get(position);
 
-        // String variables to get {title, poster url and release date}
-        String finalUrl = Constants.IMAGE_BASE_URL_NORMAL + currentItem.getPoster();
+        // Display view on screen
+        holder.mTvTitle.setText(currentItem.getTitle());
+
+        // String variables to get {title, mIvPoster url and release date}
+        String finalUrl = Constants.IMAGE_BASE_URL_ORIGINAL + currentItem.getPoster();
 
         // Display the image by Picasso library
-        Picasso.with(context).load(finalUrl)
-                .into(holder.poster);
+        Picasso.with(mContext)
+                .load(finalUrl)
+                .into(holder.mIvPoster);
 
-        // Set on click listener on the {movie poster} to go to Details Activity
-        holder.poster.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, DetailsActivity.class);
-                intent.putExtra(Constants.SOURCE, currentItem);
-                context.startActivity(intent);
-            }
+        // Delete the movie from the database
+        holder.mIvDelete.setOnClickListener(view -> {
+
+            AppExecutors.getInstance().diskIO().execute(() -> {
+                // Find a reference to the AppDatabase class
+                mDb = AppDatabase.getInstance(mContext);
+                // Delete the selected move by it's position
+                mDb.movieDao().deleteMovie(getAllData().get(position));
+            });
+            // SnackBar
+            Snackbar snackbar =
+                    Snackbar.make(holder.mCl, R.string.movie_removed, Snackbar.LENGTH_LONG);
+            snackbar.show();
         });
 
-//        // Set the given text by ViewHolder object
-//        holder.date.setText(currentItem.getReleaseDate());
+        // Set on click listener on the {movie mIvPoster} to go to Details Activity
+        holder.mIvPoster.setOnClickListener(v -> {
+            Intent intent = new Intent(mContext, DetailsActivity.class);
+            intent.putExtra(Constants.EXTRA_DATA, currentItem);
+            mContext.startActivity(intent);
+        });
     }
 
     /**
@@ -109,17 +132,19 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
      */
     @Override
     public int getItemCount() {
-        return allData != null ? allData.size() : 0;
+        return mAllDataList != null ? mAllDataList.size() : 0;
     }
 
     /**
      * Cache of the children views for a list item.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         // Initialize the views
-        private ImageView poster;
-//        private TextView date;
+        private ImageView mIvPoster;
+        private TextView mTvTitle;
+        private ImageView mIvDelete;
+        private ConstraintLayout mCl;
 
         /**
          * Constructor for our ViewHolder. Within this constructor, we get a reference to our
@@ -128,12 +153,13 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
          * @param itemView The View that you inflated in
          *                 {@link FavouriteAdapter#onCreateViewHolder(ViewGroup, int)}
          */
-        public ViewHolder(View itemView) {
+        ViewHolder(final View itemView) {
             super(itemView);
-
             // Find a reference for the views
-            poster = itemView.findViewById(R.id.iv_poster);
-//            date = itemView.findViewById(R.id.tv_date);
+            mIvPoster = itemView.findViewById(R.id.iv_poster);
+            mTvTitle = itemView.findViewById(R.id.tv_movie_title);
+            mIvDelete = itemView.findViewById(R.id.iv_delete);
+            mCl = itemView.findViewById(R.id.constraint_layout);
         }
     }
 }

@@ -13,6 +13,7 @@ public class APIClient {
     private static com.example.android.moviesapp.network.APIClient mInstance;
     private Retrofit retrofit;
 
+    @SuppressWarnings("WeakerAccess")
     public APIClient() {
 
         Gson gson = new GsonBuilder()

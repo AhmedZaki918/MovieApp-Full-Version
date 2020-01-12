@@ -1,43 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:paddingBottom="16dp">
 
-    <android.support.constraint.ConstraintLayout
+
+    <!-- Constraint layout -->
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".activity.DetailsActivity">
+        tools:mContext=".activity.DetailsActivity">
 
+
+        <!-- The poster -->
         <ImageView
             android:id="@+id/iv_poster"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
+            android:contentDescription="@string/movie_poster"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/backgrounds/scenic[7]" />
 
 
+        <!-- Trailer label -->
         <TextView
             android:id="@+id/tv_trailer_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            style="@style/Headers"
             android:layout_marginTop="16dp"
             android:text="@string/trailer_label"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view_trailer"
+
+        <!-- Trailer RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_trailer"
             style="@style/RecyclerView"
             android:layout_marginTop="16dp"
             android:orientation="horizontal"
@@ -45,20 +51,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_trailer_label" />
 
+
+        <!-- Review label -->
         <TextView
             android:id="@+id/tv_reviews_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            style="@style/Headers"
             android:layout_marginTop="16dp"
             android:text="@string/reviews_label"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view3" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view_reviews"
+
+        <!-- Review RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_reviews"
             style="@style/RecyclerView"
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -66,6 +72,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_reviews_label" />
 
 
+        <!-- Release date icon -->
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
@@ -74,19 +81,24 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_poster"
-            app:srcCompat="@drawable/baseline_date_range_white_18" />
+            app:srcCompat="@drawable/baseline_date_range_white_18"
+            tools:ignore="ContentDescription" />
 
+
+        <!-- Release date value -->
         <TextView
             android:id="@+id/tv_release_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
-            android:textColor="#BDBDBD"
+            android:textColor="@color/offWhite"
             app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toBottomOf="@+id/iv_poster"
             tools:text="22-5-2019" />
 
+
+        <!-- Rating icon -->
         <ImageView
             android:id="@+id/iv_rate"
             android:layout_width="wrap_content"
@@ -95,13 +107,16 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toEndOf="@+id/tv_release_date"
             app:layout_constraintTop_toBottomOf="@+id/iv_poster"
-            app:srcCompat="@drawable/baseline_whatshot_white_18" />
+            app:srcCompat="@drawable/baseline_whatshot_white_18"
+            tools:ignore="ContentDescription" />
 
+
+        <!-- Rating value -->
         <TextView
             android:id="@+id/tv_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
             android:textColor="@color/orange"
             android:textStyle="bold"
@@ -109,6 +124,8 @@
             app:layout_constraintTop_toBottomOf="@+id/iv_poster"
             tools:text="7.5" />
 
+
+        <!-- All votes icon -->
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="wrap_content"
@@ -117,21 +134,26 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toEndOf="@+id/tv_rating"
             app:layout_constraintTop_toBottomOf="@+id/iv_poster"
-            app:srcCompat="@drawable/baseline_perm_identity_white_18" />
+            app:srcCompat="@drawable/baseline_perm_identity_white_18"
+            tools:ignore="ContentDescription" />
 
+
+        <!--  All votes value -->
         <TextView
             android:id="@+id/tv_vote_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
-            android:textColor="#BDBDBD"
+            android:textColor="@color/offWhite"
             app:layout_constraintStart_toEndOf="@+id/imageView2"
             app:layout_constraintTop_toBottomOf="@+id/iv_poster"
             tools:text="20544" />
 
+
+        <!-- Favourite tool -->
         <CheckBox
-            android:id="@+id/ch_favou"
+            android:id="@+id/cb_favourite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -142,17 +164,17 @@
             app:layout_constraintTop_toBottomOf="@+id/iv_poster" />
 
 
+        <!-- Overview label -->
         <TextView
             android:id="@+id/tv_overview_label"
             style="@style/Headers"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:text="@string/summary"
-            android:textColor="@color/colorAccent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_release_date" />
 
 
+        <!-- Overview Read More value-->
         <com.borjabravo.readmoretextview.ReadMoreTextView
             android:id="@+id/tv_summary"
             android:layout_width="match_parent"
@@ -160,8 +182,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:textColor="#BDBDBD"
-            app:colorClickableText="#fff"
+            android:textColor="@color/offWhite"
+            app:colorClickableText="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -171,125 +193,125 @@
             tools:text="Interstellar chronicles the adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel and conquer the vast distances involved in an interstellar voyage." />
 
 
+        <!-- Status label -->
         <TextView
             android:id="@+id/tv_label_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/MoreInfoLabels"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/status"
-            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_label_info" />
 
+
+        <!-- Status value -->
         <TextView
             android:id="@+id/tv_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/MoreInfoValues"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
-            android:textColor="#BDBDBD"
             app:layout_constraintStart_toEndOf="@+id/tv_label_status"
             app:layout_constraintTop_toBottomOf="@+id/tv_label_info"
             tools:text="Released" />
 
+
+        <!-- Budget label -->
         <TextView
             android:id="@+id/tv_budget_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/MoreInfoLabels"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="@string/budget"
-            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_label_status" />
 
+
+        <!-- Budget value -->
         <TextView
             android:id="@+id/tv_budget"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/MoreInfoValues"
             android:layout_marginTop="8dp"
-            android:textColor="#BDBDBD"
             app:layout_constraintStart_toStartOf="@+id/tv_status"
             app:layout_constraintTop_toBottomOf="@+id/tv_status"
             tools:text="55000000$" />
 
+
+        <!-- Revenue label -->
         <TextView
             android:id="@+id/tv_revenue_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/MoreInfoLabels"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="@string/revenue"
-            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_budget_label" />
 
+
+        <!-- Revenue value -->
         <TextView
             android:id="@+id/tv_revenue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/MoreInfoValues"
             android:layout_marginTop="8dp"
-            android:textColor="#BDBDBD"
             app:layout_constraintStart_toStartOf="@+id/tv_status"
             app:layout_constraintTop_toBottomOf="@+id/tv_budget"
             tools:text="285000452$" />
 
+
+        <!-- Popularity label -->
         <TextView
             android:id="@+id/tv_popular_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="64dp"
+            style="@style/MoreInfoLabels"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:text="@string/title"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toEndOf="@+id/tv_status"
+            app:layout_constraintEnd_toStartOf="@+id/tv_popularity"
             app:layout_constraintTop_toBottomOf="  @+id/tv_label_info" />
 
+
+        <!-- Popularity value -->
         <TextView
             android:id="@+id/tv_popularity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/MoreInfoValues"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
-            android:textColor="#BDBDBD"
+            android:layout_marginEnd="64dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_language_label"
             app:layout_constraintTop_toBottomOf="  @+id/tv_label_info"
             tools:text="45.000" />
 
+
+        <!-- Language label -->
         <TextView
             android:id="@+id/tv_language_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/MoreInfoLabels"
             android:layout_marginTop="8dp"
             android:text="@string/language"
-            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@+id/tv_popular_label"
             app:layout_constraintTop_toBottomOf="@+id/tv_popular_label" />
 
+
+        <!-- Language value -->
         <TextView
             android:id="@+id/tv_language"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/MoreInfoValues"
             android:layout_marginTop="8dp"
-            android:textColor="#BDBDBD"
             app:layout_constraintStart_toStartOf="@+id/tv_popularity"
             app:layout_constraintTop_toBottomOf="@+id/tv_popularity"
             tools:text="en" />
 
 
+        <!-- More Info label -->
         <TextView
             android:id="@+id/tv_label_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            style="@style/Headers"
             android:layout_marginTop="16dp"
             android:text="@string/more_info"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view2" />
 
+
+        <!--  First view -->
         <View
             android:id="@+id/view"
             android:layout_width="match_parent"
@@ -302,6 +324,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_summary" />
 
+
+        <!--  Second view -->
         <View
             android:id="@+id/view2"
             android:layout_width="match_parent"
@@ -312,8 +336,10 @@
             android:background="@color/gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recycler_view_trailer" />
+            app:layout_constraintTop_toBottomOf="@+id/rv_trailer" />
 
+
+        <!-- Third view -->
         <View
             android:id="@+id/view3"
             android:layout_width="match_parent"
@@ -326,6 +352,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_revenue_label" />
 
+
+        <!-- No review (In case of null) -->
         <TextView
             android:id="@+id/tv_no_reviews"
             android:layout_width="match_parent"
@@ -336,7 +364,7 @@
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:text="@string/no_reviews_found"
-            android:textColor="#BDBDBD"
+            android:textColor="@color/offWhite"
             android:textSize="18sp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -344,6 +372,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view3" />
 
+
+        <!-- No trailers (In case of null) -->
         <TextView
             android:id="@+id/tv_no_trailers"
             android:layout_width="match_parent"
@@ -354,7 +384,7 @@
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:text="@string/no_trailers_found_yet"
-            android:textColor="#BDBDBD"
+            android:textColor="@color/offWhite"
             android:textSize="18sp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/view2"
@@ -363,6 +393,58 @@
             app:layout_constraintTop_toBottomOf="@+id/view" />
 
 
-    </android.support.constraint.ConstraintLayout>
+        <!-- Comments of reviews value -->
+        <TextView
+            android:id="@+id/tv_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="4dp"
+            android:textColor="@color/offWhite"
+            app:layout_constraintEnd_toStartOf="@+id/tv_label_comments"
+            app:layout_constraintTop_toBottomOf="@+id/view3"
+            tools:text="8" />
+
+
+        <!-- Comments of reviews label -->
+        <TextView
+            android:id="@+id/tv_label_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/comments"
+            android:textColor="@color/offWhite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+
+        <!-- Numbers of trailers label -->
+        <TextView
+            android:id="@+id/tv_sub_label_trailers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/trailers"
+            android:textColor="@color/offWhite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
+
+
+        <!-- Numbers of trailers value -->
+        <TextView
+            android:id="@+id/tv_trailers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="4dp"
+            android:textColor="@color/offWhite"
+            app:layout_constraintEnd_toStartOf="@+id/tv_sub_label_trailers"
+            app:layout_constraintTop_toBottomOf="@+id/view"
+            tools:text="12" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

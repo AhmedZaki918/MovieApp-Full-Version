@@ -4,15 +4,20 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+
 public class Reviews {
 
-    // Initialize variables
+    /**
+     * Initialize variables
+     */
     @SerializedName("id")
     private int id;
     @SerializedName("results")
     private List<Results> results = null;
 
-    // Getters and Setters
+    /**
+     * Getter
+     */
     public int getId() {
         return id;
     }
@@ -21,6 +26,9 @@ public class Reviews {
         return results;
     }
 
+    /**
+     * Setter
+     */
     public void setId(int id) {
         this.id = id;
     }

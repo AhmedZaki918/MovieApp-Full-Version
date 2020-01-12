@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+
+    <!-- Overview Read More -->
     <com.borjabravo.readmoretextview.ReadMoreTextView
         android:id="@+id/tv_reviews"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#BDBDBD"
-        app:colorClickableText="#fff"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="24dp"
+        android:textColor="@color/offWhite"
+        app:colorClickableText="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,14 +24,18 @@
         app:trimMode="trimModeLength"
         tools:text="@string/review_test" />
 
+
+    <!-- The author -->
     <TextView
         android:id="@+id/tv_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textColor="#BDBDBD"
-        android:textStyle="italic|bold"
+        android:textColor="@color/white"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/mikl" />
-</android.support.constraint.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

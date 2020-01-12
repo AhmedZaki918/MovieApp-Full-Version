@@ -4,9 +4,10 @@ package com.example.android.moviesapp.model;
  * An {@link AllData} object contains information related to a movie.
  */
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -18,46 +19,38 @@ import java.util.List;
 @Entity(tableName = "movie")
 public class AllData implements Parcelable {
 
-    @PrimaryKey(autoGenerate = false)
+    /**
+     * Initialize variables
+     */
+    @PrimaryKey
     @SerializedName("id")
     private int id;
 
-    /**
-     * Name of the title
-     */
+    // The title
     @SerializedName("original_title")
     private String mTitle;
 
-    /**
-     * Name of the poster
-     */
+    // The poster
     @SerializedName("poster_path")
     private String mPoster;
 
-    /**
-     * The backdrop of the poster
-     */
+    // The backdrop
     @SerializedName("backdrop_path")
     public String mBackdrop;
 
-    /**
-     * The overview
-     */
+    // The overview
     @SerializedName("overview")
     private String mOverview;
 
-    /**
-     * User & Rating
-     */
+    // User & Rating
     @SerializedName("vote_average")
     private String mUserRating;
 
-    /**
-     * Release date
-     */
+    // Release date
     @SerializedName("release_date")
     private String mReleaseDate;
 
+    // Results
     @SerializedName("results")
     private List<AllData> results = null;
 
@@ -72,11 +65,16 @@ public class AllData implements Parcelable {
         this.mReleaseDate = mReleaseDate;
     }
 
+    /**
+     * Default Constructor
+     */
     @Ignore
     public AllData() {
     }
 
-    // Constructor used for parcel
+    /**
+     * Constructor used for parcel
+     */
     protected AllData(Parcel in) {
         id = in.readInt();
         mTitle = in.readString();
@@ -88,7 +86,9 @@ public class AllData implements Parcelable {
         results = in.createTypedArrayList(AllData.CREATOR);
     }
 
-    // Used when un-parceling our parcel (creating the object)
+    /**
+     * Used when un-parceling our parcel (creating the object)
+     */
     public static final Creator<AllData> CREATOR = new Creator<AllData>() {
         @Override
         public AllData createFromParcel(Parcel in) {
@@ -101,28 +101,17 @@ public class AllData implements Parcelable {
         }
     };
 
-
-    // Get the results array
-    public List<AllData> getResults() {
-        return results;
-    }
-
-    // Setters
-    public void setResults(List<AllData> results) {
-        this.results = results;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    // Return hashcode of object
+    /**
+     * Return hashcode of object
+     */
     @Override
     public int describeContents() {
         return 0;
     }
 
-    // Write object values to parcel for storage
+    /**
+     * Write object values to parcel for storage
+     */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
@@ -135,28 +124,30 @@ public class AllData implements Parcelable {
         dest.writeTypedList(results);
     }
 
+    /**
+     * Getter
+     */
     // Get the original title
     public String getTitle() {
         return mTitle;
     }
 
-    // Get the poster of the movie
+    // Get the poster
     public String getPoster() {
         return mPoster;
     }
 
-
-    // Get the overview of the movie
+    // Get the overview
     public String getOverview() {
         return mOverview;
     }
 
-    // Get the average vote for the users
+    // Get the average vote
     public String getUserRating() {
         return mUserRating;
     }
 
-    // Get the release date of the movie
+    // Get the release date
     public String getReleaseDate() {
         return mReleaseDate;
     }
@@ -166,7 +157,26 @@ public class AllData implements Parcelable {
         return id;
     }
 
-    public String getmBackdrop() {
+    // Get the results array
+    public List<AllData> getResults() {
+        return results;
+    }
+
+    // Get the backdrop
+    public String getBackdrop() {
         return mBackdrop;
+    }
+
+    /**
+     * Setter
+     */
+    // Set results for movies
+    public void setResults(List<AllData> results) {
+        this.results = results;
+    }
+
+    // Set id's for movies
+    public void setId(int id) {
+        this.id = id;
     }
 }

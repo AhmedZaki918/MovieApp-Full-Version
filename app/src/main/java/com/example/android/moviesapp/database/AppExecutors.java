@@ -2,7 +2,8 @@ package com.example.android.moviesapp.database;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -22,6 +23,7 @@ public class AppExecutors {
     private final Executor mainThread;
     private final Executor networkIO;
 
+    // Constructor for our class
     private AppExecutors(Executor diskIO, Executor networkIO, Executor mainThread) {
         this.diskIO = diskIO;
         this.networkIO = networkIO;
@@ -41,14 +43,6 @@ public class AppExecutors {
 
     public Executor diskIO() {
         return diskIO;
-    }
-
-    public Executor mainThread() {
-        return mainThread;
-    }
-
-    public Executor networkIO() {
-        return networkIO;
     }
 
     private static class MainThreadExecutor implements Executor {

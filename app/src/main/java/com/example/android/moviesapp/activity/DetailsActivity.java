@@ -2,15 +2,19 @@ package com.example.android.moviesapp.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,15 +30,16 @@ import com.example.android.moviesapp.model.Reviews.Results;
 import com.example.android.moviesapp.model.Reviews.Reviews;
 import com.example.android.moviesapp.model.Details;
 import com.example.android.moviesapp.network.APIClient;
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,254 +49,306 @@ import static java.lang.Double.parseDouble;
 public class DetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.iv_poster)
-    ImageView poster;
+    ImageView ivPoster;
     @BindView(R.id.tv_rating)
-    TextView userRating;
+    TextView tvUserRating;
     @BindView(R.id.tv_summary)
-    ReadMoreTextView overview;
+    ReadMoreTextView rmOverview;
     @BindView(R.id.tv_release_date)
-    TextView releaseDate;
-    @BindView(R.id.ch_favou)
-    CheckBox save;
-    @BindView(R.id.tv_overview_label)
-    TextView textView5;
+    TextView tvReleaseDate;
+    @BindView(R.id.cb_favourite)
+    CheckBox cbSave;
     @BindView(R.id.tv_trailer_label)
     TextView tvTrailerLabel;
-    @BindView(R.id.recycler_view_trailer)
-    RecyclerView recyclerViewTrailer;
+    @BindView(R.id.rv_trailer)
+    RecyclerView rvTrailers;
     @BindView(R.id.tv_reviews_label)
     TextView tvReviewsLabel;
-    @BindView(R.id.recycler_view_reviews)
-    RecyclerView recyclerViewReviews;
-    @BindView(R.id.imageView)
-    ImageView imageView;
+    @BindView(R.id.rv_reviews)
+    RecyclerView rvReviews;
     @BindView(R.id.tv_revenue)
-    TextView revenue;
+    TextView tvRevenue;
     @BindView(R.id.tv_status)
-    TextView status;
+    TextView tvStatus;
     @BindView(R.id.tv_budget)
-    TextView budget;
+    TextView tvBudget;
     @BindView(R.id.tv_vote_count)
-    TextView voteCount;
+    TextView tvVoteCount;
     @BindView(R.id.tv_popularity)
-    TextView popularity;
+    TextView tvPopularity;
     @BindView(R.id.tv_language)
-    TextView language;
+    TextView tvLanguage;
     @BindView(R.id.tv_no_reviews)
-    TextView noReviews;
+    TextView tvNoReviews;
     @BindView(R.id.tv_no_trailers)
-    TextView noTrailers;
+    TextView tvNoTrailers;
+    @BindView(R.id.tv_comments)
+    TextView tvCommentsNumbers;
+    @BindView(R.id.tv_trailers)
+    TextView tvTrailersNumbers;
+    @BindView(R.id.tv_label_comments)
+    TextView tvLabelComments;
+    @BindView(R.id.tv_sub_label_trailers)
+    TextView tvSubLabelTrailers;
+    @BindView(R.id.scroll_view)
+    ScrollView sv;
 
-
-    // String variables to store the given value passed by the intent
-    public String givenPoster;
-    public String givenTitle;
-    public String givenRating;
-    public String givenOverview;
-    private String givenDate;
+    // String variables to store the given value passed by intent
+    String givenPoster;
+    String givenTitle;
+    String givenRating;
+    String givenOverview;
+    String givenDate;
 
     // Initialize RecyclerView, Adapter, Api key and Model classes
-    private RecyclerView recyclerTrailer;
-    private RecyclerView recyclerReview;
-    private TrailerAdapter trailerAdapter;
-    private ReviewAdapter reviewAdapter;
-    private List<com.example.android.moviesapp.model.Trailers.Results> trailersResults;
-    private List<Results> reviewsResults;
+    private RecyclerView mRvTrailer;
+    private RecyclerView mRvReview;
+    private TrailerAdapter mTrailerAdapter;
+    private ReviewAdapter mReviewAdapter;
+    private List<com.example.android.moviesapp.model.Trailers.Results> mTrailersList;
+    private List<Results> mReviewsList;
     private String apiKey = Constants.Api_key;
 
     // Obj from model class
-    AllData allData;
+    private AllData mAllData;
     // Member variable for the Database
     private AppDatabase mDb;
 
-
     // variables for SharedPreferences
-    public SharedPreferences StatePreferences;
-    private SharedPreferences.Editor StatePrefsEditor;
+    SharedPreferences StatePreferences;
+    private SharedPreferences.Editor mStatePrefsEditor;
     public Boolean State;
     public int movId;
 
+    // Action Bar
     ActionBar actionBar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-
-        // Prepare the code to use ButterKnife library
         ButterKnife.bind(this);
 
+        //  Find a reference to ActionBar
         actionBar = getSupportActionBar();
 
-        // Find a reference to the AppDatabase class
+        // Find a reference to AppDatabase class
         mDb = AppDatabase.getInstance(getApplicationContext());
+
         // Prepare the intent to use it
         Intent intent = getIntent();
         // Get the data from the model class
-        allData = intent.getParcelableExtra(Constants.SOURCE);
+        mAllData = intent.getParcelableExtra(Constants.EXTRA_DATA);
 
         // Get all fields we need to show them in that activity By Intent
-        givenPoster = Constants.IMAGE_BASE_URL_NORMAL + allData.getmBackdrop();
-        givenTitle = allData.getTitle();
-        givenRating = allData.getUserRating();
-        givenOverview = allData.getOverview();
-        givenDate = allData.getReleaseDate();
-//        Log.e("DetailsActivity", "Budget = " + details.getBudget());
-
-        givenPoster = Constants.IMAGE_BASE_URL_NORMAL + allData.getmBackdrop();
-//        Log.e("DetailsActivity", "Backdrop = " + allData.getmBackdrop());
+        assert mAllData != null;
+        givenPoster = Constants.IMAGE_BASE_URL_ORIGINAL + mAllData.getBackdrop();
+        givenTitle = mAllData.getTitle();
+        givenRating = mAllData.getUserRating();
+        givenOverview = mAllData.getOverview();
+        givenDate = mAllData.getReleaseDate();
 
         // Display the poster of the selected movie By Picasso library
-        Picasso.with(this).load(givenPoster).into(poster);
+        Picasso.with(this)
+                .load(givenPoster)
+                .into(ivPoster);
 
-        // Pass the given text by intent and display it in the TextView
+        // Pass the given text by intent and display it in TextView
         actionBar.setTitle(givenTitle);
-        userRating.setText(givenRating);
-        overview.setText(givenOverview);
-        releaseDate.setText(givenDate);
+        tvUserRating.setText(givenRating);
+        rmOverview.setText(givenOverview);
+        tvReleaseDate.setText(givenDate);
 
-        // Find a reference to the RecyclerView for the trailers
-        recyclerTrailer = findViewById(R.id.recycler_view_trailer);
-        // Set layout manager for RecyclerView
+        // Setup RecyclerView for trailers
+        mRvTrailer = findViewById(R.id.rv_trailer);
         LinearLayoutManager lmTrailer = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true);
-        recyclerTrailer.setLayoutManager(lmTrailer);
+        mRvTrailer.setLayoutManager(lmTrailer);
+        mRvTrailer.setHasFixedSize(true);
+        mTrailersList = new ArrayList<>();
 
-        // Find a reference to the Results model class
-        trailersResults = new ArrayList<>();
-
-        // Find a reference to the RecyclerView for the reviews
-        recyclerReview = findViewById(R.id.recycler_view_reviews);
-        // Set layout manager for RecyclerView
+        // Setup RecyclerView for reviews
+        mRvReview = findViewById(R.id.rv_reviews);
         LinearLayoutManager lmReview = new LinearLayoutManager(this);
-        recyclerReview.setLayoutManager(lmReview);
+        mRvReview.setLayoutManager(lmReview);
+        mRvReview.setHasFixedSize(true);
+        mTrailersList = new ArrayList<>();
 
-        // Find a reference to the Results model class
-        trailersResults = new ArrayList<>();
-
-        // Display the data related of trailers and reviews by getId method in the model class
-        displayTrailers(allData.getId());
-        displayReviews(allData.getId());
+        // Display the data related of trailers and reviews by getId method in model class
+        displayTrailersAndInfo(mAllData.getId());
+        displayReviews(mAllData.getId());
 
         // To save the state of CheckBox Favourite button (Check And UnChecked)
         StatePreferences = getSharedPreferences("ChkPrefs", MODE_PRIVATE);
-        StatePrefsEditor = StatePreferences.edit();
+        mStatePrefsEditor = StatePreferences.edit();
         State = StatePreferences.getBoolean("CheckState", false);
-        movId = StatePreferences.getInt("Movieid", 0);
-        if (State && movId == allData.getId()) {
-            save.setChecked(true);
+        movId = StatePreferences.getInt("MovieId", 0);
+        if (State && movId == mAllData.getId()) {
+            cbSave.setChecked(true);
         }
-    }
 
-    // Get the trailers by Retrofit library
-    public void displayTrailers(int id) {
+        // Save the movie to the database
+        cbSave.setOnClickListener(view -> {
 
-        Call<Details> call = APIClient.getInstance().getApi().get_Movie_Trailers(id, apiKey, "videos");
-        call.enqueue(new Callback<Details>() {
-            @Override
-            public void onResponse(Call<Details> call, Response<Details> response) {
+            // If checked
+            if (cbSave.isChecked()) {
+                AppExecutors.getInstance().diskIO().execute(() -> {
+                    // Insert the selected movie to the database
+                    mDb.movieDao().insertMovie(mAllData);
+                });
+                // Save the id of the movie in shared preferences
+                mStatePrefsEditor.putBoolean("CheckState", true);
+                mStatePrefsEditor.putInt("MovieId", mAllData.getId());
+                mStatePrefsEditor.apply();
 
-                if (response.body() != null) {
-                    trailersResults = response.body().videos.getResults();
+                // SnackBar
+                Snackbar snackbar =
+                        Snackbar.make(sv, R.string.movie_added, Snackbar.LENGTH_LONG)
+                                .setAction(R.string.see_list, view1 -> {
+                                    Intent intent1 = new Intent(DetailsActivity.this, FavouriteActivity.class);
+                                    startActivity(intent1);
+                                }).setActionTextColor(Color.CYAN);
+                snackbar.show();
 
-                    String budgetValue = response.body().getBudget();
-                    budgetValue = formatNumber(parseDouble(budgetValue));
-                    budget.setText(String.format("%s$", budgetValue));
+                // If not checked
+            } else {
+                AppExecutors.getInstance().diskIO().execute(() -> {
+                    // Delete the selected movie by it's position
+                    mDb.movieDao().deleteMovie(mAllData);
+                });
+                // Delete the id of the movie in shared preferences
+                mStatePrefsEditor.putBoolean("CheckState", false);
+                mStatePrefsEditor.putInt("MovieId", 0);
+                mStatePrefsEditor.apply();
 
-                    String revenueValue = response.body().getRevenue();
-                    revenueValue = formatNumber(parseDouble(revenueValue));
-                    revenue.setText(String.format("%s$", revenueValue));
-
-                    status.setText(response.body().getStatus());
-                    voteCount.setText(response.body().getVoteCount());
-                    popularity.setText(response.body().getPopularity());
-                    language.setText(response.body().getLanguage());
-
-
-                }
-                trailerAdapter = new TrailerAdapter(DetailsActivity.this, trailersResults);
-
-                if (trailerAdapter.getItemCount() == 0) {
-                    tvTrailerLabel.setVisibility(View.GONE);
-                    noTrailers.setVisibility(View.VISIBLE);
-
-                }
-                recyclerTrailer.setAdapter(trailerAdapter);
-            }
-
-            @Override
-            public void onFailure(Call<Details> call, Throwable t) {
-                Toast.makeText(DetailsActivity.this, getString(R.string.error_fetch), Toast.LENGTH_SHORT).show();
+                // SnackBar
+                Snackbar snackbar =
+                        Snackbar.make(sv, R.string.movie_removed, Snackbar.LENGTH_LONG);
+                snackbar.show();
             }
         });
     }
 
-    // Get the reviews by Retrofit library
+    /**
+     * Get the trailers by Retrofit library
+     *
+     * @param id refer to getId method in model class.
+     */
+    public void displayTrailersAndInfo(int id) {
+
+        Call<Details> call = APIClient.getInstance().getApi().get_Movie_Trailers(id, apiKey, "videos");
+        call.enqueue(new Callback<Details>() {
+            @Override
+            public void onResponse(@NonNull Call<Details> call, @NonNull Response<Details> response) {
+
+                if (response.body() != null) {
+                    mTrailersList = response.body().videos.getResults();
+
+                    // Display the budget of the movie
+                    String budgetValue = response.body().getBudget();
+                    budgetValue = formatNumber(parseDouble(budgetValue));
+                    tvBudget.setText(String.format("%s$", budgetValue));
+
+                    // Display the revenue of the movie
+                    String revenueValue = response.body().getRevenue();
+                    revenueValue = formatNumber(parseDouble(revenueValue));
+                    tvRevenue.setText(String.format("%s$", revenueValue));
+
+                    // Display the remaining views
+                    tvStatus.setText(response.body().getStatus());
+                    tvVoteCount.setText(response.body().getVoteCount());
+                    tvPopularity.setText(response.body().getPopularity());
+                    tvLanguage.setText(response.body().getLanguage());
+                }
+                // Initialize the adapter
+                mTrailerAdapter = new TrailerAdapter(DetailsActivity.this, mTrailersList);
+
+                // Get the number of trailers in adapter
+                int numOfComments = mTrailerAdapter.getItemCount();
+
+                // If there's no trailers found, notify the user via text
+                if (mTrailerAdapter.getItemCount() == 0) {
+                    tvTrailerLabel.setVisibility(View.GONE);
+                    tvNoTrailers.setVisibility(View.VISIBLE);
+                    tvSubLabelTrailers.setVisibility(View.GONE);
+
+                    // If there's trailers available
+                } else {
+                    // If there's one trailer only, write trailers without "S"
+                    if (mTrailerAdapter.getItemCount() == 1) {
+                        tvTrailersNumbers.setText(String.valueOf(numOfComments));
+                        tvSubLabelTrailers.setText(R.string.one_trailer);
+
+                        // Write trailers with "S"
+                    } else {
+                        tvTrailersNumbers.setText(String.valueOf(numOfComments));
+                    }
+                }
+                // Set the adapter to RecyclerView
+                mRvTrailer.setAdapter(mTrailerAdapter);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Details> call, @NonNull Throwable t) {
+                Toast.makeText(DetailsActivity.this, R.string.error_fetch, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /**
+     * Get the reviews by Retrofit library
+     *
+     * @param id refer to getId method in model class.
+     */
     public void displayReviews(int id) {
 
         Call<Reviews> call = APIClient.getInstance().getApi().get_Movie_Reviews(id, apiKey);
         call.enqueue(new Callback<Reviews>() {
             @Override
-            public void onResponse(Call<Reviews> call, Response<Reviews> response) {
+            public void onResponse(@NonNull Call<Reviews> call, @NonNull Response<Reviews> response) {
 
                 if (response.body() != null) {
-                    reviewsResults = response.body().getResults();
+                    mReviewsList = response.body().getResults();
                 }
-                reviewAdapter = new ReviewAdapter(DetailsActivity.this, reviewsResults);
+                // Initialize the adapter
+                mReviewAdapter = new ReviewAdapter(DetailsActivity.this, mReviewsList);
 
-                if (reviewAdapter.getItemCount() == 0) {
+                // Get the number of reviews in adapter
+                int numOfComments = mReviewAdapter.getItemCount();
+
+                // If there's no reviews found, notify the user via text
+                if (mReviewAdapter.getItemCount() == 0) {
                     tvReviewsLabel.setVisibility(View.GONE);
-                    noReviews.setVisibility(View.VISIBLE);
+                    tvNoReviews.setVisibility(View.VISIBLE);
+                    tvLabelComments.setVisibility(View.GONE);
+
+                    // If there's one review only, write reviews without "S"
+                } else {
+                    if (mReviewAdapter.getItemCount() == 1) {
+                        tvCommentsNumbers.setText(String.valueOf(numOfComments));
+                        tvLabelComments.setText(R.string.one_comment);
+
+                        // Write reviews with "S"
+                    } else {
+                        tvCommentsNumbers.setText(String.valueOf(numOfComments));
+                    }
                 }
-                recyclerReview.setAdapter(reviewAdapter);
+                // Set the adapter to RecyclerView
+                mRvReview.setAdapter(mReviewAdapter);
             }
 
             @Override
-            public void onFailure(Call<Reviews> call, Throwable t) {
-                Toast.makeText(DetailsActivity.this, getString(R.string.error_fetch), Toast.LENGTH_SHORT).show();
+            public void onFailure(@NonNull Call<Reviews> call, @NonNull Throwable t) {
+                Toast.makeText(DetailsActivity.this, R.string.error_fetch, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    // Save movies to the database
-    @OnClick(R.id.ch_favou)
-    public void onViewClicked() {
-        if (save.isChecked()) {
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    // Insert the selected move to the database
-                    mDb.movieDao().insertMovie(allData);
-                }
-            });
-            StatePrefsEditor.putBoolean("CheckState", true);
-            StatePrefsEditor.putInt("Movieid", allData.getId());
-            StatePrefsEditor.commit();
-
-            Toast toast = Toast.makeText(DetailsActivity.this, "Saved", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
-            toast.show();
-
-        } else {
-
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    // Delete the selected move by it's position
-                    mDb.movieDao().deleteMovie(allData);
-                }
-            });
-            StatePrefsEditor.putBoolean("CheckState", false);
-            StatePrefsEditor.putInt("Movieid", 0);
-            StatePrefsEditor.commit();
-
-            Toast toast = Toast.makeText(DetailsActivity.this, "Deleted", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
-            toast.show();
-        }
-    }
-
-    // Add thousand separators in number
+    /**
+     * Add thousand separators in number
+     *
+     * @param number refer to the budget and revenue to format it
+     * @return the number after formatting
+     */
     private String formatNumber(double number) {
         DecimalFormat formatter = new DecimalFormat("#,###");
         return formatter.format(number);

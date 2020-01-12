@@ -1,6 +1,6 @@
 package com.example.android.moviesapp.database;
 
-import android.arch.persistence.room.TypeConverter;
+import androidx.room.TypeConverter;
 
 import com.example.android.moviesapp.model.AllData;
 import com.google.gson.Gson;
@@ -10,7 +10,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 // Converter class for List<AllData>
-public class Convertor {
+@SuppressWarnings("WeakerAccess")
+public class Converter {
 
     @TypeConverter
     public static List<AllData> fromString(String value) {
@@ -22,7 +23,6 @@ public class Convertor {
     @TypeConverter
     public static String fromArrayList(List<AllData> list) {
         Gson gson = new Gson();
-        String json = gson.toJson(list);
-        return json;
+        return gson.toJson(list);
     }
 }

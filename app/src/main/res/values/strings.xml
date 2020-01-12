@@ -1,22 +1,16 @@
 <resources>
     <string name="app_name">MoviesApp</string>
     <string name="no_internet_connection">No internet connection</string>
-    <string name="no_movies">No data to show</string>
 
-    // Label for user rating in DetailsActivity
-    <string name="rate">Rating:</string>
-
-    // Label for release date in DetailsActivity
-    <string name="date">Release date:</string>
 
     // Label for the summary in DetailsActivity
     <string name="summary">Overview</string>
 
     // Label of the DetailsActivity layout
-    <string name="results">Details</string>
+    <string name="mResultsList">Details</string>
 
     <string name="settings_menu_item">Settings</string>
-    <string name="settings_title">Custom Settings</string>
+    <string name="settings_title">Settings</string>
 
     <!-- Strings For Sort-By Preference -->
     <string name="settings_sort_by_label">Sort By</string>
@@ -41,6 +35,8 @@
         providing an original opinion without giving away too much of the plot.
         A great movie review can be a work of art in its own right. Read on to learn how to analyze a movie,
         come up with an interesting thesis and write a review as entertaining as your source material.</string>
+
+
     <string name="favourite">Favourite</string>
     <string name="trailer_label">Trailers</string>
     <string name="reviews_label">Reviews</string>
@@ -53,11 +49,22 @@
     <string name="revenue">Revenue</string>
     <string name="title">Popularity</string>
     <string name="language">Language</string>
-    <string name="adult">Title</string>
-    <string name="adult_no">Nothing</string>
-    <string name="adult_yes">available</string>
     <string name="no_reviews_found">No reviews found yet.</string>
     <string name="no_trailers_found_yet">No trailers found yet.</string>
+    <string name="view_details">Delete All</string>
+    <string name="retry">Retry</string>
+    <string name="comments">comments</string>
+    <string name="trailers">trailers</string>
+    <string name="one_trailer">trailer</string>
+    <string name="one_comment">comment</string>
+    <string name="nothing_to_show">Nothing to show…</string>
+    <string name="get_started_">Get started by adding a movie.</string>
+    <string name="movie_removed">Removed from Favourite list</string>
+    <string name="movie_added">Added to Favourite list</string>
+    <string name="see_list">SEE LIST</string>
+    <string name="connection_lost">Connection Lost</string>
+    <string name="movie_poster">movie poster</string>
+    <string name="delete_movie">Delete the movie</string>
 
 
 </resources>

@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class Results {
 
-    // Initialize variables
+    /**
+     * Initialize variables
+     */
     @SerializedName("id")
     private String id;
     @SerializedName("key")
@@ -12,7 +14,9 @@ public class Results {
     @SerializedName("name")
     private String name;
 
-    // Getters and Setters
+    /**
+     * Getter
+     */
     public String getId() {
         return id;
     }
@@ -25,10 +29,9 @@ public class Results {
         return name;
     }
 
-    public void setKey(String key) {
-        this.key = key;
-    }
-
+    /**
+     * Setter
+     */
     public void setId(String id) {
         this.id = id;
     }

@@ -1,9 +1,9 @@
 package com.example.android.moviesapp.database;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LiveData;
-import android.support.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.annotation.NonNull;
 
 import com.example.android.moviesapp.model.AllData;
 
@@ -15,15 +15,15 @@ public class MainViewModel extends AndroidViewModel {
      * Wrapping the <list<AllData> with LiveData
      * to avoid requiring the data every time
      **/
-    private LiveData<List<AllData>> moviesData;
+    private LiveData<List<AllData>> mAllDataList;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
         AppDatabase dataBase = AppDatabase.getInstance(this.getApplication());
-        moviesData = dataBase.movieDao().loadAllResults();
+        mAllDataList = dataBase.movieDao().loadAllResults();
     }
 
-    public LiveData<List<AllData>> getMoviesData() {
-        return moviesData;
+    public LiveData<List<AllData>> getAllDataList() {
+        return mAllDataList;
     }
 }

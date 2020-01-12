@@ -1,31 +1,43 @@
 package com.example.android.moviesapp.activity;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.content.res.Configuration;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.moviesapp.R;
 import com.example.android.moviesapp.adapter.FavouriteAdapter;
 import com.example.android.moviesapp.database.AppDatabase;
 import com.example.android.moviesapp.database.AppExecutors;
 import com.example.android.moviesapp.database.MainViewModel;
-import com.example.android.moviesapp.model.AllData;
 
-import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class FavouriteActivity extends AppCompatActivity {
 
+
+    @BindView(R.id.rv_favourite)
+    RecyclerView rvFavourite;
+    @BindView(R.id.tv_add_movie)
+    TextView tvAddMovie;
+    @BindView(R.id.tv_nothing_show)
+    TextView tvNothingShow;
+
     // Initialize variables
-    private RecyclerView recyclerView;
-    private FavouriteAdapter favouriteAdapter;
-    private GridLayoutManager layoutManager;
+    private FavouriteAdapter mFavouriteAdapter;
+    GridLayoutManager layoutManager;
     private AppDatabase mDb;
 
 
@@ -33,75 +45,59 @@ public class FavouriteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite);
+        ButterKnife.bind(this);
 
         // Find a reference to AppDatabase
         mDb = AppDatabase.getInstance(getApplicationContext());
 
-        // Find a reference to the recyclerView
-        recyclerView = findViewById(R.id.recycler_view_favo);
+        // Setup for the RecyclerView
+        layoutManager = new GridLayoutManager(this, calculateNumberOfColumns());
+        rvFavourite.setLayoutManager(layoutManager);
+        rvFavourite.setHasFixedSize(true);
+        mFavouriteAdapter = new FavouriteAdapter(FavouriteActivity.this);
+        rvFavourite.setAdapter(mFavouriteAdapter);
 
-        // Set layout manager and RecyclerView
-        layoutManager = new GridLayoutManager(this, calculateNumberOfColumns(2));
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
-
-        // Bind the Adapter to RecyclerView
-        favouriteAdapter = new FavouriteAdapter(FavouriteActivity.this);
-        recyclerView.setAdapter(favouriteAdapter);
-
-
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        int position = viewHolder.getAdapterPosition();
-                        List<AllData> allData = favouriteAdapter.getAllData();
-                        // Call deleteMovie in the movieDao at that position
-                        mDb.movieDao().deleteMovie(allData.get(position));
-
-                    }
-                });
-
-            }
-        }).attachToRecyclerView(recyclerView);
-
-
+        // Calling the method
         setupViewModel();
     }
 
-
-    // Custom method to calculate number of columns for grid type recycler view
-    private int calculateNumberOfColumns(int base) {
-        int columns = base;
+    /**
+     * Custom method to calculate number of columns for grid type recycler view
+     *
+     * @return the number of columns to display on screen.
+     */
+    private int calculateNumberOfColumns() {
+        // Initialize 2 columns at first
+        int columns = 2;
         String screenSize = getScreenSizeCategory();
 
-        if (screenSize.equals("small")) {
-            if (base != 1) {
-                columns = columns - 1;
-            }
-        } else if (screenSize.equals("normal")) {
-            // Do nothing
-        } else if (screenSize.equals("large")) {
-            columns += 2;
-        } else if (screenSize.equals("xlarge")) {
-            columns += 3;
+        switch (screenSize) {
+            case "small":
+                columns -= 1;
+                break;
+            case "normal":
+                // Do nothing
+                break;
+            case "large":
+                columns += 2;
+                break;
+            case "xlarge":
+                columns += 3;
+                break;
         }
-
+        // Case of landscape orientation
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            columns = (int) (columns * 2);
+            columns *= 2;
         }
-
         return columns;
     }
 
-    // Custom method to get screen size category
+
+    /**
+     * Custom method to get screen size category
+     *
+     * @return current screen size
+     */
     private String getScreenSizeCategory() {
         int screenLayout = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
 
@@ -126,11 +122,27 @@ public class FavouriteActivity extends AppCompatActivity {
     // The operation of the ViewModel
     public void setupViewModel() {
         MainViewModel viewModel = ViewModelProviders.of(FavouriteActivity.this).get(MainViewModel.class);
-        viewModel.getMoviesData().observe(FavouriteActivity.this, new Observer<List<AllData>>() {
-            @Override
-            public void onChanged(@Nullable List<AllData> allData) {
-                favouriteAdapter.setAllData(allData);
-            }
-        });
+        viewModel.getAllDataList().observe(FavouriteActivity.this, allData -> mFavouriteAdapter.setAllData(allData));
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.favourite, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.item1) {
+
+            AppExecutors.getInstance().diskIO().execute(() -> mDb.movieDao().deleteAll());
+
+            // Show messages to notify the user all items were deleted from the database
+            tvAddMovie.setVisibility(View.VISIBLE);
+            tvNothingShow.setVisibility(View.VISIBLE);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

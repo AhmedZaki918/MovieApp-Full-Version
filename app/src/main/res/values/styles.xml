@@ -10,29 +10,40 @@
 
 
     <style name="PreferenceScreen" parent="Theme.AppCompat">
+
     </style>
 
-    <!-- Style for common attributes to (Original title & Summary) -->
+    <!-- Style for common headers like(Overview, Trailers, More Info and Reviews) -->
     <style name="Headers">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/green</item>
         <item name="android:textSize">18sp</item>
         <item name="android:layout_marginStart">16dp</item>
     </style>
 
+    <!-- Style for common labels in More Info -->
+    <style name="MoreInfoLabels">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+
+    </style>
+
+    <!-- Style for common values in More Info -->
+    <style name="MoreInfoValues">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/offWhite</item>
+
+    </style>
+
+    <!-- Style for RecyclerView -->
     <style name="RecyclerView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">16dp</item>
         <item name="android:layout_marginEnd">16dp</item>
-    </style>
-
-    <style name="LayoutFavourite">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">8dp</item>
-        <item name="android:layout_marginTop">4dp</item>
     </style>
 
 </resources>

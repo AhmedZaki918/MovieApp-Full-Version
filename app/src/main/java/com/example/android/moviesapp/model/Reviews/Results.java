@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class Results {
 
-    // Initialize variables
+    /**
+     * Initialize variables
+     */
     @SerializedName("author")
     private String author;
     @SerializedName("content")
@@ -12,7 +14,9 @@ public class Results {
     @SerializedName("id")
     private String id;
 
-    // Getters and Setters
+    /**
+     * Getter
+     */
     public String getAuthor() {
         return author;
     }
@@ -25,6 +29,9 @@ public class Results {
         return id;
     }
 
+    /**
+     * Setter
+     */
     public void setContent(String content) {
         this.content = content;
     }

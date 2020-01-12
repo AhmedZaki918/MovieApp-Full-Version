@@ -2,7 +2,10 @@ package com.example.android.moviesapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,22 +21,21 @@ import java.util.List;
 
 
 /**
- * An {@link MoviesAdapter} knows how to create a list item layout for each movie
+ * An {@link MainAdapter} knows how to create a list item layout for each movie
  * in the data source (a list of {@link AllData} objects).
  * <p>
  * These list item layouts will be provided to an adapter view like GridView
  * to be displayed to the user.
  */
-public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder> {
+public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
+    private Context mContext;
+    private List<AllData> mAllDataList;
 
-    Context context;
-    private List<AllData> allData;
-
-    // Constructor for our MoviesAdapter
-    public MoviesAdapter(Context context, List<AllData> allData) {
-        this.context = context;
-        this.allData = allData;
+    // Constructor for our MainAdapter
+    public MainAdapter(Context mContext, List<AllData> mAllDataList) {
+        this.mContext = mContext;
+        this.mAllDataList = mAllDataList;
     }
 
     /**
@@ -44,15 +46,15 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
      * @param viewType  Id for the list item layout
      * @return A new ViewHolder that holds the View for each list item
      */
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
         Context context = viewGroup.getContext();
-        int layoutIdForListItem = R.layout.list_item;
+        int layoutIdForListItem = R.layout.layout_main;
         LayoutInflater inflater = LayoutInflater.from(context);
-        boolean shouldAttachToParentImmediately = false;
 
-        View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
+        View view = inflater.inflate(layoutIdForListItem, viewGroup, false);
         return new ViewHolder(view);
     }
 
@@ -70,29 +72,25 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         // Get the position of the current list item
-        final AllData currentItem = allData.get(position);
+        final AllData currentItem = mAllDataList.get(position);
 
-        String title = currentItem.getTitle();
-        holder.movieTitle.setText(title);
-
-        String rating = currentItem.getUserRating();
-        holder.movieRate.setText(rating);
+        // Display views on screen
+        holder.mTvTitle.setText(currentItem.getTitle());
+        holder.mTvRate.setText(currentItem.getUserRating());
 
         // String variable to get poster url
-        final String finalUrl = Constants.IMAGE_BASE_URL_NORMAL + currentItem.getPoster();
+        final String finalUrl = Constants.IMAGE_BASE_URL_ORIGINAL + currentItem.getPoster();
 
         // Display the image by Picasso library
-        Picasso.with(context).load(finalUrl)
-                .into(holder.moviePoster);
+        Picasso.with(mContext)
+                .load(finalUrl)
+                .into(holder.mIvPoster);
 
         // Set on click listener on the {movie poster} to go to Details Activity
-        holder.moviePoster.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, DetailsActivity.class);
-                intent.putExtra(Constants.SOURCE, currentItem);
-                context.startActivity(intent);
-            }
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(mContext, DetailsActivity.class);
+            intent.putExtra(Constants.EXTRA_DATA, currentItem);
+            mContext.startActivity(intent);
         });
     }
 
@@ -104,33 +102,32 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
      */
     @Override
     public int getItemCount() {
-        return allData != null ? allData.size() : 0;
+        return mAllDataList != null ? mAllDataList.size() : 0;
     }
 
     /**
      * Cache of the children views for a list item.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         // Initialize the views
-        ImageView moviePoster;
-        TextView movieTitle;
-        TextView movieRate;
+        private ImageView mIvPoster;
+        private TextView mTvTitle;
+        private TextView mTvRate;
 
         /**
          * Constructor for our ViewHolder. Within this constructor, we get a reference to our
-         * TextViews and Imageview and set an onClickListener to listen for clicks.
+         * TextViews and ImageView and set an onClickListener to listen for clicks.
          *
          * @param itemView The View that you inflated in
          *                 {@link FavouriteAdapter#onCreateViewHolder(ViewGroup, int)}
          */
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
-
             // Find a reference for the views
-            moviePoster = itemView.findViewById(R.id.iv_poster);
-            movieTitle = itemView.findViewById(R.id.tv_movie_title);
-            movieRate = itemView.findViewById(R.id.tv_rating);
+            mIvPoster = itemView.findViewById(R.id.iv_poster);
+            mTvTitle = itemView.findViewById(R.id.tv_movie_title);
+            mTvRate = itemView.findViewById(R.id.tv_rating);
         }
     }
 }

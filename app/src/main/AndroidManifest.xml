@@ -15,13 +15,14 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".activity.MainActivity" />
+
         <activity
             android:name=".activity.FavouriteActivity"
             android:label="@string/favourite">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.moviesapp.activity.MoviesActivity" />
+                android:value="com.example.android.moviesapp.activity.MainActivity" />
         </activity>
         <activity
             android:name=".activity.SettingActivity"
@@ -29,14 +30,16 @@
             android:theme="@style/PreferenceScreen">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.moviesapp.activity.MoviesActivity" />
+                android:value="com.example.android.moviesapp.activity.MainActivity" />
         </activity>
         <activity android:name=".activity.DetailsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.moviesapp.activity.MoviesActivity" />
+                android:value="com.example.android.moviesapp.activity.MainActivity" />
         </activity>
-        <activity android:name=".activity.MoviesActivity">
+        <activity
+            android:name=".activity.SplashScreenActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

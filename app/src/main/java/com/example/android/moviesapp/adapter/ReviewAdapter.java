@@ -1,17 +1,17 @@
 package com.example.android.moviesapp.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.borjabravo.readmoretextview.ReadMoreTextView;
 import com.example.android.moviesapp.R;
-import com.example.android.moviesapp.activity.DetailsActivity;
 import com.example.android.moviesapp.model.Reviews.Results;
 
 import java.util.List;
@@ -26,13 +26,14 @@ import java.util.List;
  */
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
 
+    @SuppressWarnings("WeakerAccess")
     Context context;
-    private List<Results> results;
+    private List<Results> mResultsList;
 
     // Constructor for our ReviewAdapter
-    public ReviewAdapter(Context context, List<Results> results) {
+    public ReviewAdapter(Context context, List<Results> mResultsList) {
         this.context = context;
-        this.results = results;
+        this.mResultsList = mResultsList;
     }
 
     /**
@@ -43,15 +44,15 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
      * @param i         Id for the list item layout
      * @return A new ViewHolder that holds the View for each list item
      */
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
 
         Context context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.layout_review;
         LayoutInflater inflater = LayoutInflater.from(context);
-        boolean shouldAttachToParentImmediately = false;
 
-        View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
+        View view = inflater.inflate(layoutIdForListItem, viewGroup, false);
         return new ReviewAdapter.ViewHolder(view);
     }
 
@@ -69,11 +70,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         // Get the position of the current list item
-        Results currentItem = results.get(position);
+        Results currentItem = mResultsList.get(position);
 
-        // Set the given text by ViewHolder object
-        holder.reviews.setText(currentItem.getContent());
-        holder.author.setText(currentItem.getAuthor());
+        // Display views on screen
+        holder.mReadMore.setText(currentItem.getContent());
+        holder.mTvAuthor.setText(currentItem.getAuthor());
     }
 
     /**
@@ -84,18 +85,18 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
      */
     @Override
     public int getItemCount() {
-        return results != null ? results.size() : 0;
+        return mResultsList != null ? mResultsList.size() : 0;
     }
 
     /**
      * Cache of the children views for a list item.
      */
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         // Initialize the views
-        ReadMoreTextView reviews;
-        TextView author;
-        TextView reviewsLabel;
+        private ReadMoreTextView mReadMore;
+        private TextView mTvAuthor;
+        TextView tvReviewLabel;
 
         /**
          * Constructor for our ViewHolder. Within this constructor, we get a reference to our
@@ -104,13 +105,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
          * @param itemView The View that you inflated in
          *                 {@link ReviewAdapter#onCreateViewHolder(ViewGroup, int)}
          */
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
-
             // Find a reference for the views
-            reviews = itemView.findViewById(R.id.tv_reviews);
-            author = itemView.findViewById(R.id.tv_author);
-            reviewsLabel = itemView.findViewById(R.id.tv_reviews_label);
+            mReadMore = itemView.findViewById(R.id.tv_reviews);
+            mTvAuthor = itemView.findViewById(R.id.tv_author);
+            tvReviewLabel = itemView.findViewById(R.id.tv_reviews_label);
         }
     }
 }
