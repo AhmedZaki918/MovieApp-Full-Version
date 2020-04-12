@@ -22,7 +22,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +30,7 @@ import com.example.android.moviesapp.adapter.MainAdapter;
 import com.example.android.moviesapp.model.AllData;
 import com.example.android.moviesapp.R;
 import com.example.android.moviesapp.network.APIClient;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView rv;
     @BindView(R.id.tv_category_name)
     TextView movieCategory;
-    @BindView(R.id.loading_indicator)
-    ProgressBar pb;
+    @BindView(R.id.shimmer_frame)
+    ShimmerFrameLayout shimmerFrameLayout;
     @BindView(R.id.tv_no_connection)
     TextView noConnection;
     @BindView(R.id.btn_retry)
@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        shimmerFrameLayout.startShimmer();
 
         // Setup for the RecyclerView
         mLm = new GridLayoutManager(this, calculateNumberOfColumns());
@@ -116,7 +118,9 @@ public class MainActivity extends AppCompatActivity {
             // If there is a network connection, fetch data
             if (mNetworkInfo != null && mNetworkInfo.isConnected()) {
                 // Set visibility on the views
-                pb.setVisibility(View.VISIBLE);
+                shimmerFrameLayout.setVisibility(View.VISIBLE);
+                shimmerFrameLayout.startShimmer();
+
                 noConnection.setVisibility(View.GONE);
                 retry.setVisibility(View.GONE);
                 rv.setVisibility(View.VISIBLE);
@@ -230,7 +234,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(@NonNull Call<AllData> call, @NonNull Response<AllData> response) {
 
                     // Set gone visibility for ProgressPar
-                    pb.setVisibility(View.GONE);
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
 
                     AllData resultsData = response.body();
                     if (resultsData != null) {
@@ -259,7 +264,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(@NonNull Call<AllData> call, @NonNull Response<AllData> response) {
 
                     // Set gone visibility for ProgressPar
-                    pb.setVisibility(View.GONE);
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
 
                     AllData resultsData = response.body();
                     if (resultsData != null) {
@@ -289,7 +295,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(@NonNull Call<AllData> call, @NonNull Response<AllData> response) {
 
                     // Set gone visibility for ProgressPar
-                    pb.setVisibility(View.GONE);
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
 
                     AllData resultsData = response.body();
                     if (resultsData != null) {
@@ -339,7 +346,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Set visibility in case of connection lost
     private void setVisibility() {
-        pb.setVisibility(View.GONE);
+        shimmerFrameLayout.setVisibility(View.GONE);
+        shimmerFrameLayout.stopShimmer();
         noConnection.setVisibility(View.VISIBLE);
         noConnection.setText(R.string.no_internet_connection);
         retry.setVisibility(View.VISIBLE);
