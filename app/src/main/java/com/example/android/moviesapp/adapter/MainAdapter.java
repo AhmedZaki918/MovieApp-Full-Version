@@ -82,7 +82,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         final String finalUrl = Constants.IMAGE_BASE_URL_ORIGINAL + currentItem.getPoster();
 
         // Display the image by Picasso library
-        Picasso.with(mContext)
+        Picasso.get()
                 .load(finalUrl)
                 .into(holder.mIvPoster);
 

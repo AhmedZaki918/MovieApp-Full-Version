@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.example.android.moviesapp.R;
 
@@ -21,14 +22,14 @@ public class SplashScreenActivity extends AppCompatActivity {
         EasySplashScreen config = new EasySplashScreen(SplashScreenActivity.this)
                 .withFullScreen()
                 .withTargetActivity(MainActivity.class)
-                .withSplashTimeOut(1000)
+                .withSplashTimeOut(500)
                 .withBackgroundColor(Color.parseColor("#1a1b29"))
                 .withAfterLogoText("MoviesApp")
                 .withLogo(R.drawable.logo);
 
         config.getAfterLogoTextView().setTextColor(Color.GRAY);
-
         View easySplashScreen = config.create();
+
         // Set ContentView method on easySplashScreen view
         setContentView(easySplashScreen);
     }

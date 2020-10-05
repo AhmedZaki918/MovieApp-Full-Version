@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         shimmerFrameLayout.startShimmer();
 
         // Setup for the RecyclerView
-        mLm = new GridLayoutManager(this, calculateNumberOfColumns());
+        mLm = new GridLayoutManager(this, 2);
         rv.setLayoutManager(mLm);
         rv.setHasFixedSize(true);
         mAllDataList = new ArrayList<>();

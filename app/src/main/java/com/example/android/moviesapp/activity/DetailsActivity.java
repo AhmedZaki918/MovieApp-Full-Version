@@ -148,8 +148,9 @@ public class DetailsActivity extends AppCompatActivity {
         givenOverview = mAllData.getOverview();
         givenDate = mAllData.getReleaseDate();
 
+
         // Display the poster of the selected movie By Picasso library
-        Picasso.with(this)
+        Picasso.get()
                 .load(givenPoster)
                 .into(ivPoster);
 
@@ -162,9 +163,11 @@ public class DetailsActivity extends AppCompatActivity {
         // Setup RecyclerView for trailers
         mRvTrailer = findViewById(R.id.rv_trailer);
         LinearLayoutManager lmTrailer = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true);
+        lmTrailer.setReverseLayout(false);
         mRvTrailer.setLayoutManager(lmTrailer);
         mRvTrailer.setHasFixedSize(true);
         mTrailersList = new ArrayList<>();
+
 
         // Setup RecyclerView for reviews
         mRvReview = findViewById(R.id.rv_reviews);

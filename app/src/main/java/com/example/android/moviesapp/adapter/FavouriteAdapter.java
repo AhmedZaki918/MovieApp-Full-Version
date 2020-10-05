@@ -97,7 +97,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
         String finalUrl = Constants.IMAGE_BASE_URL_ORIGINAL + currentItem.getPoster();
 
         // Display the image by Picasso library
-        Picasso.with(mContext)
+        Picasso.get()
                 .load(finalUrl)
                 .into(holder.mIvPoster);
 
