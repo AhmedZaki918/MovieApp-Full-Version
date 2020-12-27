@@ -14,12 +14,12 @@ Displays all information related to the latest movies in the global cinemas incl
 
 ## Screenshots
 
-<img src="images/1-home.jpeg" width="200" > <img src="images/2-details.jpeg" width="200" >
-<img src="images/3-more-details.jpeg" width="200" >
-<img src="images/4-more-reviews.jpeg" width="200" >
-<img src="images/5-no-reviews.jpeg" width="200" >
-<img src="images/6-favourite.jpeg" width="200" >
-<img src="images/7-sort.jpeg" width="200" >
+<img src="images/1-home.jpeg" width="250" > <img src="images/2-details.jpeg" width="250" >
+<img src="images/3-more-details.jpeg" width="250" >
+<img src="images/4-more-reviews.jpeg" width="250" >
+<img src="images/5-no-reviews.jpeg" width="250" >
+<img src="images/6-favourite.jpeg" width="250" >
+<img src="images/7-sort.jpeg" width="250" >
 
 ## Technologies
 
