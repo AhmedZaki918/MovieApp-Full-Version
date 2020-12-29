@@ -1,4 +1,4 @@
-# Movies Android App
+# Movies App
 
 
 ## Table of contents
