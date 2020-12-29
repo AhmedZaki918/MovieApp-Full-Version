@@ -10,7 +10,7 @@
 * [License](#license)
 
 ## General info
-Displays all information related to the latest movies in the global cinemas included with trailers, reviews, rating and other information.  
+Android app displays all information related to the latest movies in the global cinemas included with trailers, reviews, rating and other information.  
 
 ## Screenshots
 
