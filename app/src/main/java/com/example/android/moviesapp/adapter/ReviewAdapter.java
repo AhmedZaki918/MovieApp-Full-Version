@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.borjabravo.readmoretextview.ReadMoreTextView;
 import com.example.android.moviesapp.R;
 import com.example.android.moviesapp.model.Reviews.Results;
 
@@ -73,7 +72,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         Results currentItem = mResultsList.get(position);
 
         // Display views on screen
-        holder.mReadMore.setText(currentItem.getContent());
+        holder.tvReviews.setText(currentItem.getContent());
         holder.mTvAuthor.setText(currentItem.getAuthor());
     }
 
@@ -94,7 +93,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     class ViewHolder extends RecyclerView.ViewHolder {
 
         // Initialize the views
-        private ReadMoreTextView mReadMore;
+        private TextView tvReviews;
         private TextView mTvAuthor;
         TextView tvReviewLabel;
 
@@ -108,7 +107,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         ViewHolder(View itemView) {
             super(itemView);
             // Find a reference for the views
-            mReadMore = itemView.findViewById(R.id.tv_reviews);
+            tvReviews = itemView.findViewById(R.id.tv_reviews);
             mTvAuthor = itemView.findViewById(R.id.tv_author);
             tvReviewLabel = itemView.findViewById(R.id.tv_reviews_label);
         }

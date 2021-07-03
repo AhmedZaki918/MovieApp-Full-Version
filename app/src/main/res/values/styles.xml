@@ -46,4 +46,10 @@
         <item name="android:layout_marginEnd">16dp</item>
     </style>
 
+
+    <style name="splashScreen" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_scr</item>
+        <item name="android:statusBarColor">@color/splash</item>
+    </style>
+
 </resources>

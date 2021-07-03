@@ -18,23 +18,21 @@
     <string name="settings_sort_by_default" translatable="false">@string/settings_sort_by_highest_rated_value</string>
 
     <!-- Label for sort-by highest-rated option -->
-    <string name="settings_sort_by_highest_rated_label">Highest rated</string>
+    <string name="highest_label">Highest rated</string>
     <string name="settings_sort_by_highest_rated_value" translatable="false">vote_count.desc</string>
 
     <!-- Label for sort-by popularity option -->
-    <string name="settings_sort_by_popularity_label">Most popular</string>
+    <string name="popularity_label">Most popular</string>
     <string name="settings_sort_by_popularity_value" translatable="false">popularity.desc</string>
 
     <!-- Label for sort-by now_playing option -->
-    <string name="settings_sort_by_now_playing_label">Now playing</string>
+    <string name="now_label">Now playing</string>
     <string name="settings_sort_by_now_playing_value" translatable="false">release_date.desc</string>
 
     <!-- For test only -->
     <string name="review_test">Whether a movie is a rotten tomato or a brilliant work of art, if people are watching it,
         its worth critiquing.A decent movie review should entertain, persuade and inform,
-        providing an original opinion without giving away too much of the plot.
-        A great movie review can be a work of art in its own right. Read on to learn how to analyze a movie,
-        come up with an interesting thesis and write a review as entertaining as your source material.</string>
+        providing an original opinion without giving away too much of the plot.</string>
 
 
     <string name="favourite">Favourite</string>
@@ -65,6 +63,9 @@
     <string name="connection_lost">Connection Lost</string>
     <string name="movie_poster">movie poster</string>
     <string name="delete_movie">Delete the movie</string>
+    <string name="most_popular">Most popular</string>
+    <string name="highest_rated">Highest rated</string>
+    <string name="now_playing">Now playing</string>
 
 
 </resources>

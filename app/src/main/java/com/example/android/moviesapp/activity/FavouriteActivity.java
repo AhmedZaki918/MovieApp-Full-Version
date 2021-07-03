@@ -1,5 +1,6 @@
 package com.example.android.moviesapp.activity;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.res.Configuration;
@@ -44,6 +45,7 @@ public class FavouriteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_favourite);
         ButterKnife.bind(this);
 
@@ -132,16 +134,19 @@ public class FavouriteActivity extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.item1) {
-
             AppExecutors.getInstance().diskIO().execute(() -> mDb.movieDao().deleteAll());
 
             // Show messages to notify the user all items were deleted from the database
             tvAddMovie.setVisibility(View.VISIBLE);
             tvNothingShow.setVisibility(View.VISIBLE);
+        } else if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

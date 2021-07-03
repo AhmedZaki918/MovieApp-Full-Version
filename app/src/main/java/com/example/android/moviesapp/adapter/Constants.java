@@ -22,4 +22,10 @@ public final class Constants {
     // Api youtube key
     @SuppressWarnings({"SpellCheckingInspection", "WeakerAccess"})
     public static final String Api_key_youtube = "AIzaSyAf2EOJerN_yYADZNBzTzmrf9slGHLFGtE";
+
+    // Shared preferences
+    public static final String KEY = "sort";
+    public static final String POPULAR = "mostPopular";
+    public static final String HIGHEST = "highestRated";
+    public static final String NOW = "nowPlaying";
 }

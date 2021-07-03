@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,6 +14,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:mContext=".activity.DetailsActivity">
+
+
+        <TextView
+            android:id="@+id/tv_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:maxLength="200"
+            android:maxLines="4"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_overview_label"
+            tools:text="@string/review_test" />
 
 
         <!-- The poster -->
@@ -174,25 +189,6 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_release_date" />
 
 
-        <!-- Overview Read More value-->
-        <com.borjabravo.readmoretextview.ReadMoreTextView
-            android:id="@+id/tv_summary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:textColor="@color/offWhite"
-            app:colorClickableText="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_overview_label"
-            app:trimLength="150"
-            app:trimMode="trimModeLength"
-            tools:text="Interstellar chronicles the adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel and conquer the vast distances involved in an interstellar voyage." />
-
-
         <!-- Status label -->
         <TextView
             android:id="@+id/tv_label_status"
@@ -317,12 +313,12 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:background="@color/gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_summary" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_overview" />
 
 
         <!--  Second view -->

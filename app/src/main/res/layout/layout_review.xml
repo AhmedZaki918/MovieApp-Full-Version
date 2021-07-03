@@ -6,22 +6,19 @@
     android:layout_height="wrap_content">
 
 
-    <!-- Overview Read More -->
-    <com.borjabravo.readmoretextview.ReadMoreTextView
+    <TextView
         android:id="@+id/tv_reviews"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="24dp"
+        android:ellipsize="end"
+        android:maxLines="5"
         android:textColor="@color/offWhite"
-        app:colorClickableText="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_author"
-        app:trimLength="300"
-        app:trimMode="trimModeLength"
         tools:text="@string/review_test" />
 
 

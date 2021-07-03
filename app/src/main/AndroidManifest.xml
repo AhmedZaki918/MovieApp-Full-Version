@@ -7,39 +7,29 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/splashScreen"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.MainActivity" />
 
         <activity
             android:name=".activity.FavouriteActivity"
             android:label="@string/favourite">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.moviesapp.activity.MainActivity" />
-        </activity>
-        <activity
-            android:name=".activity.SettingActivity"
-            android:label="@string/settings_title"
-            android:theme="@style/PreferenceScreen">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.moviesapp.activity.MainActivity" />
+                android:value="com.example.android.moviesapp.ui.MainActivity" />
         </activity>
         <activity android:name=".activity.DetailsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.moviesapp.activity.MainActivity" />
+                android:value="com.example.android.moviesapp.ui.MainActivity" />
         </activity>
-        <activity
-            android:name=".activity.SplashScreenActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

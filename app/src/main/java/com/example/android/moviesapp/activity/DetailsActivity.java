@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -18,7 +19,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.borjabravo.readmoretextview.ReadMoreTextView;
 import com.example.android.moviesapp.R;
 import com.example.android.moviesapp.adapter.Constants;
 import com.example.android.moviesapp.adapter.ReviewAdapter;
@@ -29,7 +29,6 @@ import com.example.android.moviesapp.model.AllData;
 import com.example.android.moviesapp.model.Reviews.Results;
 import com.example.android.moviesapp.model.Reviews.Reviews;
 import com.example.android.moviesapp.model.Details;
-import com.example.android.moviesapp.network.APIClient;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
@@ -52,8 +51,8 @@ public class DetailsActivity extends AppCompatActivity {
     ImageView ivPoster;
     @BindView(R.id.tv_rating)
     TextView tvUserRating;
-    @BindView(R.id.tv_summary)
-    ReadMoreTextView rmOverview;
+    @BindView(R.id.tv_overview)
+    TextView tvOverview;
     @BindView(R.id.tv_release_date)
     TextView tvReleaseDate;
     @BindView(R.id.cb_favourite)
@@ -93,12 +92,14 @@ public class DetailsActivity extends AppCompatActivity {
     @BindView(R.id.scroll_view)
     ScrollView sv;
 
+
     // String variables to store the given value passed by intent
     String givenPoster;
     String givenTitle;
     String givenRating;
     String givenOverview;
     String givenDate;
+
 
     // Initialize RecyclerView, Adapter, Api key and Model classes
     private RecyclerView mRvTrailer;
@@ -126,6 +127,7 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_details);
         ButterKnife.bind(this);
 
@@ -157,8 +159,9 @@ public class DetailsActivity extends AppCompatActivity {
         // Pass the given text by intent and display it in TextView
         actionBar.setTitle(givenTitle);
         tvUserRating.setText(givenRating);
-        rmOverview.setText(givenOverview);
+        tvOverview.setText(givenOverview);
         tvReleaseDate.setText(givenDate);
+
 
         // Setup RecyclerView for trailers
         mRvTrailer = findViewById(R.id.rv_trailer);
@@ -177,8 +180,8 @@ public class DetailsActivity extends AppCompatActivity {
         mTrailersList = new ArrayList<>();
 
         // Display the data related of trailers and reviews by getId method in model class
-        displayTrailersAndInfo(mAllData.getId());
-        displayReviews(mAllData.getId());
+//        displayTrailersAndInfo(mAllData.getId());
+//        displayReviews(mAllData.getId());
 
         // To save the state of CheckBox Favourite button (Check And UnChecked)
         StatePreferences = getSharedPreferences("ChkPrefs", MODE_PRIVATE);
@@ -236,115 +239,115 @@ public class DetailsActivity extends AppCompatActivity {
      *
      * @param id refer to getId method in model class.
      */
-    public void displayTrailersAndInfo(int id) {
-
-        Call<Details> call = APIClient.getInstance().getApi().get_Movie_Trailers(id, apiKey, "videos");
-        call.enqueue(new Callback<Details>() {
-            @Override
-            public void onResponse(@NonNull Call<Details> call, @NonNull Response<Details> response) {
-
-                if (response.body() != null) {
-                    mTrailersList = response.body().videos.getResults();
-
-                    // Display the budget of the movie
-                    String budgetValue = response.body().getBudget();
-                    budgetValue = formatNumber(parseDouble(budgetValue));
-                    tvBudget.setText(String.format("%s$", budgetValue));
-
-                    // Display the revenue of the movie
-                    String revenueValue = response.body().getRevenue();
-                    revenueValue = formatNumber(parseDouble(revenueValue));
-                    tvRevenue.setText(String.format("%s$", revenueValue));
-
-                    // Display the remaining views
-                    tvStatus.setText(response.body().getStatus());
-                    tvVoteCount.setText(response.body().getVoteCount());
-                    tvPopularity.setText(response.body().getPopularity());
-                    tvLanguage.setText(response.body().getLanguage());
-                }
-                // Initialize the adapter
-                mTrailerAdapter = new TrailerAdapter(DetailsActivity.this, mTrailersList);
-
-                // Get the number of trailers in adapter
-                int numOfComments = mTrailerAdapter.getItemCount();
-
-                // If there's no trailers found, notify the user via text
-                if (mTrailerAdapter.getItemCount() == 0) {
-                    tvTrailerLabel.setVisibility(View.GONE);
-                    tvNoTrailers.setVisibility(View.VISIBLE);
-                    tvSubLabelTrailers.setVisibility(View.GONE);
-
-                    // If there's trailers available
-                } else {
-                    // If there's one trailer only, write trailers without "S"
-                    if (mTrailerAdapter.getItemCount() == 1) {
-                        tvTrailersNumbers.setText(String.valueOf(numOfComments));
-                        tvSubLabelTrailers.setText(R.string.one_trailer);
-
-                        // Write trailers with "S"
-                    } else {
-                        tvTrailersNumbers.setText(String.valueOf(numOfComments));
-                    }
-                }
-                // Set the adapter to RecyclerView
-                mRvTrailer.setAdapter(mTrailerAdapter);
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Details> call, @NonNull Throwable t) {
-                Toast.makeText(DetailsActivity.this, R.string.error_fetch, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    public void displayTrailersAndInfo(int id) {
+//
+//        Call<Details> call = APIClient.getInstance().getApi().get_Movie_Trailers(id, apiKey, "videos");
+//        call.enqueue(new Callback<Details>() {
+//            @Override
+//            public void onResponse(@NonNull Call<Details> call, @NonNull Response<Details> response) {
+//
+//                if (response.body() != null) {
+//                    mTrailersList = response.body().videos.getResults();
+//
+//                    // Display the budget of the movie
+//                    String budgetValue = response.body().getBudget();
+//                    budgetValue = formatNumber(parseDouble(budgetValue));
+//                    tvBudget.setText(String.format("%s$", budgetValue));
+//
+//                    // Display the revenue of the movie
+//                    String revenueValue = response.body().getRevenue();
+//                    revenueValue = formatNumber(parseDouble(revenueValue));
+//                    tvRevenue.setText(String.format("%s$", revenueValue));
+//
+//                    // Display the remaining views
+//                    tvStatus.setText(response.body().getStatus());
+//                    tvVoteCount.setText(response.body().getVoteCount());
+//                    tvPopularity.setText(response.body().getPopularity());
+//                    tvLanguage.setText(response.body().getLanguage());
+//                }
+//                // Initialize the adapter
+//                mTrailerAdapter = new TrailerAdapter(DetailsActivity.this, mTrailersList);
+//
+//                // Get the number of trailers in adapter
+//                int numOfComments = mTrailerAdapter.getItemCount();
+//
+//                // If there's no trailers found, notify the user via text
+//                if (mTrailerAdapter.getItemCount() == 0) {
+//                    tvTrailerLabel.setVisibility(View.GONE);
+//                    tvNoTrailers.setVisibility(View.VISIBLE);
+//                    tvSubLabelTrailers.setVisibility(View.GONE);
+//
+//                    // If there's trailers available
+//                } else {
+//                    // If there's one trailer only, write trailers without "S"
+//                    if (mTrailerAdapter.getItemCount() == 1) {
+//                        tvTrailersNumbers.setText(String.valueOf(numOfComments));
+//                        tvSubLabelTrailers.setText(R.string.one_trailer);
+//
+//                        // Write trailers with "S"
+//                    } else {
+//                        tvTrailersNumbers.setText(String.valueOf(numOfComments));
+//                    }
+//                }
+//                // Set the adapter to RecyclerView
+//                mRvTrailer.setAdapter(mTrailerAdapter);
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<Details> call, @NonNull Throwable t) {
+//                Toast.makeText(DetailsActivity.this, R.string.error_fetch, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
     /**
      * Get the reviews by Retrofit library
      *
      * @param id refer to getId method in model class.
      */
-    public void displayReviews(int id) {
-
-        Call<Reviews> call = APIClient.getInstance().getApi().get_Movie_Reviews(id, apiKey);
-        call.enqueue(new Callback<Reviews>() {
-            @Override
-            public void onResponse(@NonNull Call<Reviews> call, @NonNull Response<Reviews> response) {
-
-                if (response.body() != null) {
-                    mReviewsList = response.body().getResults();
-                }
-                // Initialize the adapter
-                mReviewAdapter = new ReviewAdapter(DetailsActivity.this, mReviewsList);
-
-                // Get the number of reviews in adapter
-                int numOfComments = mReviewAdapter.getItemCount();
-
-                // If there's no reviews found, notify the user via text
-                if (mReviewAdapter.getItemCount() == 0) {
-                    tvReviewsLabel.setVisibility(View.GONE);
-                    tvNoReviews.setVisibility(View.VISIBLE);
-                    tvLabelComments.setVisibility(View.GONE);
-
-                    // If there's one review only, write reviews without "S"
-                } else {
-                    if (mReviewAdapter.getItemCount() == 1) {
-                        tvCommentsNumbers.setText(String.valueOf(numOfComments));
-                        tvLabelComments.setText(R.string.one_comment);
-
-                        // Write reviews with "S"
-                    } else {
-                        tvCommentsNumbers.setText(String.valueOf(numOfComments));
-                    }
-                }
-                // Set the adapter to RecyclerView
-                mRvReview.setAdapter(mReviewAdapter);
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Reviews> call, @NonNull Throwable t) {
-                Toast.makeText(DetailsActivity.this, R.string.error_fetch, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    public void displayReviews(int id) {
+//
+//        Call<Reviews> call = APIClient.getInstance().getApi().get_Movie_Reviews(id, apiKey);
+//        call.enqueue(new Callback<Reviews>() {
+//            @Override
+//            public void onResponse(@NonNull Call<Reviews> call, @NonNull Response<Reviews> response) {
+//
+//                if (response.body() != null) {
+//                    mReviewsList = response.body().getResults();
+//                }
+//                // Initialize the adapter
+//                mReviewAdapter = new ReviewAdapter(DetailsActivity.this, mReviewsList);
+//
+//                // Get the number of reviews in adapter
+//                int numOfComments = mReviewAdapter.getItemCount();
+//
+//                // If there's no reviews found, notify the user via text
+//                if (mReviewAdapter.getItemCount() == 0) {
+//                    tvReviewsLabel.setVisibility(View.GONE);
+//                    tvNoReviews.setVisibility(View.VISIBLE);
+//                    tvLabelComments.setVisibility(View.GONE);
+//
+//                    // If there's one review only, write reviews without "S"
+//                } else {
+//                    if (mReviewAdapter.getItemCount() == 1) {
+//                        tvCommentsNumbers.setText(String.valueOf(numOfComments));
+//                        tvLabelComments.setText(R.string.one_comment);
+//
+//                        // Write reviews with "S"
+//                    } else {
+//                        tvCommentsNumbers.setText(String.valueOf(numOfComments));
+//                    }
+//                }
+//                // Set the adapter to RecyclerView
+//                mRvReview.setAdapter(mReviewAdapter);
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<Reviews> call, @NonNull Throwable t) {
+//                Toast.makeText(DetailsActivity.this, R.string.error_fetch, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
     /**
      * Add thousand separators in number
@@ -355,5 +358,17 @@ public class DetailsActivity extends AppCompatActivity {
     private String formatNumber(double number) {
         DecimalFormat formatter = new DecimalFormat("#,###");
         return formatter.format(number);
+    }
+
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
