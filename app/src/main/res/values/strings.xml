@@ -7,7 +7,7 @@
     <string name="summary">Overview</string>
 
     // Label of the DetailsActivity layout
-    <string name="mResultsList">Details</string>
+    <string name="mReviewsResultsList">Details</string>
 
     <string name="settings_menu_item">Settings</string>
     <string name="settings_title">Settings</string>
@@ -35,7 +35,7 @@
         providing an original opinion without giving away too much of the plot.</string>
 
 
-    <string name="favourite">Favourite</string>
+    <string name="saved">Saved</string>
     <string name="trailer_label">Trailers</string>
     <string name="reviews_label">Reviews</string>
     <string name="mikl">Mikl</string>
@@ -52,12 +52,12 @@
     <string name="view_details">Delete All</string>
     <string name="retry">Retry</string>
     <string name="comments">comments</string>
-    <string name="trailers">trailers</string>
+    <string name="trailers">trailer</string>
     <string name="one_trailer">trailer</string>
     <string name="one_comment">comment</string>
     <string name="nothing_to_show">Nothing to show…</string>
     <string name="get_started_">Get started by adding a movie.</string>
-    <string name="movie_removed">Removed from Favourite list</string>
+    <string name="movie_removed">Removed from favourite</string>
     <string name="movie_added">Added to Favourite list</string>
     <string name="see_list">SEE LIST</string>
     <string name="connection_lost">Connection Lost</string>

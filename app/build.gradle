@@ -1,6 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
@@ -37,32 +35,24 @@ android {
 
 dependencies {
 
-    // Facebook Shimmer
-    implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
-    // CardView
-    implementation 'androidx.cardview:cardview:1.0.0'
-
-    // Room
-    implementation 'androidx.room:room-runtime:2.3.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    kapt 'androidx.room:room-compiler:2.3.0'
-
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.3.1'
 
-    // Picasso
-    implementation 'com.squareup.picasso:picasso:2.71828'
 
-    // ButterKnife
-    implementation 'com.jakewharton:butterknife:10.2.1'
-    kapt 'com.jakewharton:butterknife-compiler:10.2.1'
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
-    // // RecyclerView
+    // RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
     // Retrofit
@@ -70,20 +60,26 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    kapt 'androidx.lifecycle:lifecycle-compiler:2.3.1'
-
     // Youtube API
     implementation files('YouTubeAndroidPlayerApi.jar')
-
 
     // RxJava
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
     implementation "com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0"
 
+    // Facebook Shimmer
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    // CardView
+    implementation 'androidx.cardview:cardview:1.0.0'
+
+    // RxJava support for Room
+    implementation 'androidx.room:room-runtime:2.3.0'
+    annotationProcessor 'androidx.room:room-compiler:2.3.0'
+    implementation "androidx.room:room-rxjava3:2.3.0"
+
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
 }
