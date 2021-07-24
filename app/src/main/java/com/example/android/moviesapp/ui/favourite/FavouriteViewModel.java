@@ -7,7 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.example.android.moviesapp.data.local.MovieDao;
-import com.example.android.moviesapp.data.model.AllData;
+import com.example.android.moviesapp.data.model.MoviesResponse;
 
 import java.util.List;
 
@@ -19,10 +19,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 public class FavouriteViewModel extends AndroidViewModel {
 
     /**
-     * Wrapping the <list<AllData> with LiveData
+     * Wrapping the <list<MoviesResponse> with LiveData
      * to avoid requiring the data every time
      **/
-    private final LiveData<List<AllData>> mAllDataList;
+    private final LiveData<List<MoviesResponse>> mAllDataList;
     MovieDao movieDao;
 
     @Inject
@@ -32,7 +32,7 @@ public class FavouriteViewModel extends AndroidViewModel {
         mAllDataList = movieDao.loadAllResults();
     }
 
-    public LiveData<List<AllData>> getAllDataList() {
+    public LiveData<List<MoviesResponse>> getAllDataList() {
         return mAllDataList;
     }
 }

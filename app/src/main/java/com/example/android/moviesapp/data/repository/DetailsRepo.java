@@ -39,6 +39,7 @@ public class DetailsRepo {
                 .subscribe(ReviewsLiveData::setValue));
     }
 
+
     public MutableLiveData<Details> getTrailersLiveData() {
         return trailersLiveData;
     }

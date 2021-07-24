@@ -4,9 +4,9 @@ import androidx.room.Database;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.example.android.moviesapp.data.model.AllData;
+import com.example.android.moviesapp.data.model.MoviesResponse;
 
-@Database(entities = {AllData.class}, version = 1, exportSchema = false)
+@Database(entities = {MoviesResponse.class}, version = 1, exportSchema = false)
 @TypeConverters({Converter.class})
 public abstract class AppDatabase extends RoomDatabase {
 

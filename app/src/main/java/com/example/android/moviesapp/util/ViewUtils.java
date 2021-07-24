@@ -3,6 +3,7 @@ package com.example.android.moviesapp.util;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -63,5 +64,11 @@ public final class ViewUtils {
         Glide.with(context)
                 .load(url)
                 .into(view);
+    }
+
+
+    public static void startActivity(Context context, Class<?> cls, String name, Parcelable value) {
+        context.startActivity(new Intent(context, cls)
+                .putExtra(name, value));
     }
 }

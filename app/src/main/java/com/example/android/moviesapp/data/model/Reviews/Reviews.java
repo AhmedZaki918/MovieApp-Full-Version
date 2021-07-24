@@ -13,11 +13,9 @@ public class Reviews {
     @SerializedName("id")
     private int id;
     @SerializedName("results")
-    private List<ReviewsResults> results = null;
+    private List<ReviewsResults> results;
 
-    /**
-     * Getter
-     */
+    // Getter
     public int getId() {
         return id;
     }
@@ -26,9 +24,7 @@ public class Reviews {
         return results;
     }
 
-    /**
-     * Setter
-     */
+    // Setter
     public void setId(int id) {
         this.id = id;
     }

@@ -3,6 +3,7 @@ package com.example.android.moviesapp.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -13,13 +14,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import com.example.android.moviesapp.R;
 import com.example.android.moviesapp.data.local.Constants;
 import com.example.android.moviesapp.data.local.UserPreferences;
-import com.example.android.moviesapp.data.model.AllData;
+import com.example.android.moviesapp.data.model.MoviesResponse;
 import com.example.android.moviesapp.data.network.APIService;
 import com.example.android.moviesapp.databinding.ActivityMainBinding;
-import com.example.android.moviesapp.databinding.LayoutMainBinding;
-import com.example.android.moviesapp.ui.adapter.GenericAdapter;
+import com.example.android.moviesapp.ui.adapter.MainAdapter;
 import com.example.android.moviesapp.ui.details.DetailsActivity;
 import com.example.android.moviesapp.ui.favourite.FavouriteActivity;
+import com.example.android.moviesapp.util.OnAdapterClick;
 import com.example.android.moviesapp.util.ViewUtils;
 
 import java.util.List;
@@ -32,7 +33,7 @@ import static android.view.View.GONE;
 
 
 @AndroidEntryPoint
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnAdapterClick {
 
 
     // Initialize the variables
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private UserPreferences userPreferences;
     private MainViewModel viewModel;
+
 
     @Inject
     APIService apiService;
@@ -64,11 +66,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-//    @Override
-//    public <T> void onItemClick(T data) {
-//        startActivity(new Intent(this, DetailsActivity.class)
-//                .putExtra(Constants.EXTRA_DATA, (Parcelable) data));
-//    }
+    @Override
+    public <T> void onItemClick(T model) {
+        ViewUtils.startActivity(this, DetailsActivity.class,
+                Constants.EXTRA_DATA, (Parcelable) model);
+    }
 
 
     @Override
@@ -135,39 +137,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void updateUi(List<AllData> data) {
-
+    private void updateUi(List<MoviesResponse> data) {
         binding.shimmerFrame.stopShimmer();
         binding.shimmerFrame.setVisibility(GONE);
-        binding.rvMain.setLayoutManager(new GridLayoutManager(this, 2));
-        binding.rvMain.setHasFixedSize(true);
-
-        binding.rvMain.setAdapter(new GenericAdapter<AllData, LayoutMainBinding>(data) {
-
-            @Override
-            public int getLayoutResId() {
-                return R.layout.layout_main;
-            }
-
-            @Override
-            public void onBindData(AllData model, int position, LayoutMainBinding binding) {
-                binding.tvMovieTitle.setText(model.getTitle());
-                binding.tvRating.setText(model.getUserRating());
-
-                // To get poster url
-                final String finalUrl = Constants.IMAGE_BASE_URL_ORIGINAL + model.getPoster();
-                ViewUtils.setupGlide(MainActivity.this, finalUrl, binding.ivPoster);
-            }
-
-            @Override
-            public void onItemClick(AllData model, int position) {
-                startActivity(new Intent(MainActivity.this, DetailsActivity.class)
-                        .putExtra(Constants.EXTRA_DATA, model));
-            }
-        });
-
-
-//        ViewUtils.setupRecyclerView(binding.rvMain, new GridLayoutManager(this, 2),
-//                new MainAdapter(data, this));
+        ViewUtils.setupRecyclerView(binding.rvMain,
+                new GridLayoutManager(this, 2),
+                new MainAdapter(data, this));
     }
 }

@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.moviesapp.data.local.Constants;
 import com.example.android.moviesapp.databinding.LayoutFavouriteBinding;
-import com.example.android.moviesapp.data.model.AllData;
+import com.example.android.moviesapp.data.model.MoviesResponse;
 import com.example.android.moviesapp.ui.favourite.OnFavouriteClick;
 import com.example.android.moviesapp.util.ViewUtils;
 
@@ -29,7 +29,7 @@ public class FavouriteViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public void bind(AllData currentItem) {
+    public void bind(MoviesResponse currentItem) {
         binding.tvMovieTitle.setText(currentItem.getTitle());
         // Build url of poster
         String finalUrl = Constants.IMAGE_BASE_URL_ORIGINAL + currentItem.getPoster();

@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.android.moviesapp.R;
 import com.example.android.moviesapp.data.local.Constants;
 import com.example.android.moviesapp.data.local.MovieDao;
-import com.example.android.moviesapp.data.model.AllData;
+import com.example.android.moviesapp.data.model.MoviesResponse;
 import com.example.android.moviesapp.data.model.Details;
 import com.example.android.moviesapp.data.model.Reviews.ReviewsResults;
 import com.example.android.moviesapp.data.network.APIService;
@@ -60,7 +59,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     private ActivityDetailsBinding binding;
     private String givenPoster;
     private LinearLayoutManager lmTrailer;
-    private AllData allData;
+    private MoviesResponse moviesResponse;
 
 
     @Override
@@ -73,8 +72,10 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 
 
         initViews();
+        checkState();
         createApiRequest();
         updateBasicInfo();
+        // Update reviews and trailers
         viewModel.deliverReviews()
                 .observe(this, response -> updateReviews(response.getResults()));
         viewModel.deliverTrailers()
@@ -83,11 +84,6 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                     updateMoreInfo(response);
                 });
 
-        // Set checkbox true when the movie is saved
-        compositeDisposable.add(movieDao.fetchInMovies(allData.getId())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((allData, throwable) -> binding.cbFavourite.setChecked(allData != null)));
         binding.cbFavourite.setOnClickListener(this);
     }
 
@@ -97,13 +93,13 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         if (v.getId() == R.id.cb_favourite) {
             if (binding.cbFavourite.isChecked()) {
                 // Wrap observable with composite disposable
-                compositeDisposable.add(movieDao.insertMovie(allData)
+                compositeDisposable.add(movieDao.insertMovie(moviesResponse)
                         .subscribeOn(Schedulers.io())
                         .subscribe(() -> ViewUtils.showSnackBar(binding.scrollView,
                                 R.string.movie_added, this)));
             } else {
                 // Delete the selected movie by it's position
-                compositeDisposable.add(movieDao.deleteMovie(allData)
+                compositeDisposable.add(movieDao.deleteMovie(moviesResponse)
                         .subscribeOn(Schedulers.io())
                         .subscribe(() -> ViewUtils.showSnackBar(binding.scrollView,
                                 R.string.movie_removed)));
@@ -139,17 +135,17 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 
     private void initViews() {
         viewModel = new ViewModelProvider(this).get(DetailsViewModel.class);
-        allData = getIntent().getParcelableExtra(Constants.EXTRA_DATA);
-        if (allData != null)
-            givenPoster = Constants.IMAGE_BASE_URL_ORIGINAL + allData.getBackdrop();
+        moviesResponse = getIntent().getParcelableExtra(Constants.EXTRA_DATA);
+        if (moviesResponse != null)
+            givenPoster = Constants.IMAGE_BASE_URL_ORIGINAL + moviesResponse.getBackdrop();
         lmTrailer = new LinearLayoutManager(this,
                 LinearLayoutManager.HORIZONTAL, true);
     }
 
 
     private void createApiRequest() {
-        viewModel.initRequest(apiService.getMovieTrailers(allData.getId(), API_KEY, VIDEOS),
-                apiService.getMovieReviews(allData.getId(), API_KEY));
+        viewModel.initRequest(apiService.getMovieTrailers(moviesResponse.getId(), API_KEY, VIDEOS),
+                apiService.getMovieReviews(moviesResponse.getId(), API_KEY));
     }
 
 
@@ -159,7 +155,9 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                 new LinearLayoutManager(this), adapter);
         // If there's no reviews found
         if (adapter.getItemCount() == 0) {
-            displayNoData(binding.tvReviewsLabel, binding.tvNoReviews, binding.tvLabelComments);
+            binding.tvReviewsLabel.setVisibility(GONE);
+            binding.tvNoReviews.setVisibility(VISIBLE);
+            binding.tvLabelComments.setVisibility(GONE);
         } else {
             binding.tvComments.setText(String.valueOf(adapter.getItemCount()));
         }
@@ -172,7 +170,9 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         ViewUtils.setupRecyclerView(binding.rvTrailer, lmTrailer, adapter);
         // If there's no trailers found
         if (adapter.getItemCount() == 0) {
-            displayNoData(binding.tvTrailerLabel, binding.tvNoTrailers, binding.tvSubLabelTrailers);
+            binding.tvTrailerLabel.setVisibility(GONE);
+            binding.tvNoTrailers.setVisibility(VISIBLE);
+            binding.tvSubLabelTrailers.setVisibility(GONE);
         } else {
             binding.tvTrailers.setText(String.valueOf(adapter.getItemCount()));
         }
@@ -191,17 +191,19 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 
     private void updateBasicInfo() {
         ViewUtils.setupGlide(this, givenPoster, binding.ivPoster);
-        if (getSupportActionBar() != null) getSupportActionBar().setTitle(allData.getTitle());
-        binding.tvRating.setText(allData.getUserRating());
-        binding.tvOverview.setText(allData.getOverview());
-        binding.tvReleaseDate.setText(allData.getReleaseDate());
+        if (getSupportActionBar() != null) getSupportActionBar().setTitle(moviesResponse.getTitle());
+        binding.tvRating.setText(moviesResponse.getUserRating());
+        binding.tvOverview.setText(moviesResponse.getOverview());
+        binding.tvReleaseDate.setText(moviesResponse.getReleaseDate());
     }
 
 
-    // If the recycler view is empty notify the user via text
-    private void displayNoData(TextView label, TextView noData, TextView subLabel) {
-        label.setVisibility(GONE);
-        noData.setVisibility(VISIBLE);
-        subLabel.setVisibility(GONE);
+    // Set checkbox true when the movie is saved
+    private void checkState() {
+        compositeDisposable.add(movieDao.fetchInMovies(moviesResponse.getId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((allData, throwable) ->
+                        binding.cbFavourite.setChecked(allData != null)));
     }
 }

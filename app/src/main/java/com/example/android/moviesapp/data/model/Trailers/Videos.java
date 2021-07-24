@@ -7,15 +7,11 @@ import java.util.List;
 
 public class Videos {
 
-    /**
-     * Initialize variables
-     */
+    // Initialize variables
     @SerializedName("results")
-    private List<TrailersResults> results = null;
+    private List<TrailersResults> results;
 
-    /**
-     * Getter
-     */
+    // Getter
     public List<TrailersResults> getResults() {
         return results;
     }

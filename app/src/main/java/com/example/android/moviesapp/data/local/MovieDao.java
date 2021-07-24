@@ -7,7 +7,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.example.android.moviesapp.data.model.AllData;
+import com.example.android.moviesapp.data.model.MoviesResponse;
 
 import java.util.List;
 
@@ -18,16 +18,16 @@ import io.reactivex.rxjava3.core.Single;
 public interface MovieDao {
 
     @Query("SELECT * FROM movie")
-    LiveData<List<AllData>> loadAllResults();
+    LiveData<List<MoviesResponse>> loadAllResults();
 
     @Query("SELECT * FROM movie WHERE id = :id")
-    Single<AllData> fetchInMovies(int id);
+    Single<MoviesResponse> fetchInMovies(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insertMovie(AllData allData);
+    Completable insertMovie(MoviesResponse moviesResponse);
 
     @Delete
-    Completable deleteMovie(AllData allData);
+    Completable deleteMovie(MoviesResponse moviesResponse);
 
     @Query("Delete FROM movie")
     Completable deleteAll();

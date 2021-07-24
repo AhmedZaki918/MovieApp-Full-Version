@@ -1,7 +1,7 @@
 package com.example.android.moviesapp.ui.favourite;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import com.example.android.moviesapp.R;
 import com.example.android.moviesapp.data.local.Constants;
 import com.example.android.moviesapp.data.local.MovieDao;
-import com.example.android.moviesapp.data.model.AllData;
+import com.example.android.moviesapp.data.model.MoviesResponse;
 import com.example.android.moviesapp.databinding.ActivityFavouriteBinding;
 import com.example.android.moviesapp.ui.adapter.FavouriteAdapter;
 import com.example.android.moviesapp.ui.details.DetailsActivity;
@@ -58,14 +58,15 @@ public class FavouriteActivity extends AppCompatActivity implements OnFavouriteC
 
 
     @Override
-    public void onItemClick(String operation, AllData position) {
+    public <T> void onItemClick(String operation, T model) {
         if (operation.equals(CLICK)) {
             // Go to details activity
-            startActivity(new Intent(this, DetailsActivity.class)
-                    .putExtra(Constants.EXTRA_DATA, position));
+            ViewUtils.startActivity(this, DetailsActivity.class,
+                    Constants.EXTRA_DATA, (Parcelable) model);
+
         } else {
             // Delete the selected movie by it's position
-            compositeDisposable.add(movieDao.deleteMovie(position)
+            compositeDisposable.add(movieDao.deleteMovie((MoviesResponse) model)
                     .subscribeOn(Schedulers.io())
                     .subscribe(() -> ViewUtils.showSnackBar(binding.constraintLayout,
                             R.string.movie_removed)));
@@ -107,7 +108,7 @@ public class FavouriteActivity extends AppCompatActivity implements OnFavouriteC
     }
 
 
-    private void updateUi(List<AllData> data) {
+    private void updateUi(List<MoviesResponse> data) {
         if (data.isEmpty()) deleteConfirmed();
         else {
             ViewUtils.setupRecyclerView(binding.recyclerView,

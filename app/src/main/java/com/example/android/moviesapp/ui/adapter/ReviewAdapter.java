@@ -16,6 +16,7 @@ import java.util.List;
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewViewHolder> {
 
     private final List<ReviewsResults> data;
+
     // Constructor for our ReviewAdapter
     public ReviewAdapter(List<ReviewsResults> data) {
         this.data = data;

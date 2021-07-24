@@ -1,7 +1,7 @@
 package com.example.android.moviesapp.data.network;
 
 
-import com.example.android.moviesapp.data.model.AllData;
+import com.example.android.moviesapp.data.model.MoviesResponse;
 import com.example.android.moviesapp.data.model.Details;
 import com.example.android.moviesapp.data.model.Reviews.Reviews;
 
@@ -13,13 +13,13 @@ import retrofit2.http.Query;
 public interface APIService {
 
     @GET("movie/popular")
-    Single<AllData> getPopular(@Query("api_key") String key);
+    Single<MoviesResponse> getPopular(@Query("api_key") String key);
 
     @GET("movie/top_rated")
-    Single<AllData> getTopRated(@Query("api_key") String key);
+    Single<MoviesResponse> getTopRated(@Query("api_key") String key);
 
     @GET("movie/now_playing")
-    Single<AllData> getNowPlaying(@Query("api_key") String key);
+    Single<MoviesResponse> getNowPlaying(@Query("api_key") String key);
 
     @GET("movie/{id}")
     Single<Details> getMovieTrailers(@Path("id") int id, @Query("api_key") String key,

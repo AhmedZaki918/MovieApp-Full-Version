@@ -4,9 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class TrailersResults {
 
-    /**
-     * Initialize variables
-     */
+    // Initialize variables
     @SerializedName("id")
     private String id;
     @SerializedName("key")
@@ -14,9 +12,8 @@ public class TrailersResults {
     @SerializedName("name")
     private String name;
 
-    /**
-     * Getter
-     */
+
+    // Getter
     public String getId() {
         return id;
     }
@@ -29,9 +26,7 @@ public class TrailersResults {
         return name;
     }
 
-    /**
-     * Setter
-     */
+    // Setter
     public void setId(String id) {
         this.id = id;
     }

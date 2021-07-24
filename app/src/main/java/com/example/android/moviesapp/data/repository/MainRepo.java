@@ -2,7 +2,7 @@ package com.example.android.moviesapp.data.repository;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.android.moviesapp.data.model.AllData;
+import com.example.android.moviesapp.data.model.MoviesResponse;
 
 import javax.inject.Inject;
 
@@ -14,7 +14,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class MainRepo {
 
     // Initialization
-    private final MutableLiveData<AllData> mutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<MoviesResponse> mutableLiveData = new MutableLiveData<>();
     public CompositeDisposable compositeDisposable;
 
 
@@ -25,7 +25,7 @@ public class MainRepo {
     }
 
 
-    public void getResponse(Single<AllData> observable) {
+    public void getResponse(Single<MoviesResponse> observable) {
         // Wrap observable with composite disposable
         compositeDisposable.add(observable
                 .subscribeOn(Schedulers.io())
@@ -33,7 +33,7 @@ public class MainRepo {
                 .subscribe(mutableLiveData::setValue));
     }
 
-    public MutableLiveData<AllData> getMutableLiveData() {
+    public MutableLiveData<MoviesResponse> getMutableLiveData() {
         return mutableLiveData;
     }
 }

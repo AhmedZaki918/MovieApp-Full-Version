@@ -1,7 +1,7 @@
 package com.example.android.moviesapp.data.model;
 
 /* **
- * An {@link AllData} object contains information related to a movie.
+ * An {@link MoviesResponse} object contains information related to a movie.
  */
 
 import androidx.room.Entity;
@@ -17,47 +17,38 @@ import java.util.List;
 
 
 @Entity(tableName = "movie")
-public class AllData implements Parcelable {
+public class MoviesResponse implements Parcelable {
 
-    /**
-     * Initialize variables
-     */
+    //Initialization
     @PrimaryKey
     @SerializedName("id")
     private int id;
 
-    // The title
     @SerializedName("original_title")
     private String mTitle;
 
-    // The poster
     @SerializedName("poster_path")
     private String mPoster;
 
-    // The backdrop
     @SerializedName("backdrop_path")
     public String mBackdrop;
 
-    // The overview
     @SerializedName("overview")
     private String mOverview;
 
-    // User & Rating
     @SerializedName("vote_average")
     private String mUserRating;
 
-    // Release date
     @SerializedName("release_date")
     private String mReleaseDate;
 
-    // Results
     @SerializedName("results")
-    private List<AllData> results = null;
+    private List<MoviesResponse> results = null;
 
-    /**
-     * Constructs a new {@link AllData} object.
-     */
-    public AllData(String mTitle, String mPoster, String mOverview, String mUserRating, String mReleaseDate) {
+
+    // Constructs a new {@link AllData} object
+    public MoviesResponse(String mTitle, String mPoster, String mOverview, String mUserRating,
+                          String mReleaseDate) {
         this.mTitle = mTitle;
         this.mPoster = mPoster;
         this.mOverview = mOverview;
@@ -65,17 +56,15 @@ public class AllData implements Parcelable {
         this.mReleaseDate = mReleaseDate;
     }
 
-    /**
-     * Default Constructor
-     */
+
+    // Default Constructor
     @Ignore
-    public AllData() {
+    public MoviesResponse() {
     }
 
-    /**
-     * Constructor used for parcel
-     */
-    protected AllData(Parcel in) {
+
+    // Constructor used for parcel
+    protected MoviesResponse(Parcel in) {
         id = in.readInt();
         mTitle = in.readString();
         mPoster = in.readString();
@@ -83,35 +72,32 @@ public class AllData implements Parcelable {
         mOverview = in.readString();
         mUserRating = in.readString();
         mReleaseDate = in.readString();
-        results = in.createTypedArrayList(AllData.CREATOR);
+        results = in.createTypedArrayList(MoviesResponse.CREATOR);
     }
 
-    /**
-     * Used when un-parceling our parcel (creating the object)
-     */
-    public static final Creator<AllData> CREATOR = new Creator<AllData>() {
+
+    // Used when un-parceling our parcel (creating the object)
+    public static final Creator<MoviesResponse> CREATOR = new Creator<MoviesResponse>() {
         @Override
-        public AllData createFromParcel(Parcel in) {
-            return new AllData(in);
+        public MoviesResponse createFromParcel(Parcel in) {
+            return new MoviesResponse(in);
         }
 
         @Override
-        public AllData[] newArray(int size) {
-            return new AllData[size];
+        public MoviesResponse[] newArray(int size) {
+            return new MoviesResponse[size];
         }
     };
 
-    /**
-     * Return hashcode of object
-     */
+
+    // Return hashcode of object
     @Override
     public int describeContents() {
         return 0;
     }
 
-    /**
-     * Write object values to parcel for storage
-     */
+
+    // Write object values to parcel for storage
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
@@ -124,58 +110,45 @@ public class AllData implements Parcelable {
         dest.writeTypedList(results);
     }
 
-    /**
-     * Getter
-     */
-    // Get the original title
+
+    // Getter
     public String getTitle() {
         return mTitle;
     }
 
-    // Get the poster
     public String getPoster() {
         return mPoster;
     }
 
-    // Get the overview
     public String getOverview() {
         return mOverview;
     }
 
-    // Get the average vote
     public String getUserRating() {
         return mUserRating;
     }
 
-    // Get the release date
     public String getReleaseDate() {
         return mReleaseDate;
     }
 
-    // Get the id of the movie
     public int getId() {
         return id;
     }
 
-    // Get the results array
-    public List<AllData> getResults() {
+    public List<MoviesResponse> getResults() {
         return results;
     }
 
-    // Get the backdrop
     public String getBackdrop() {
         return mBackdrop;
     }
 
-    /**
-     * Setter
-     */
-    // Set results for movies
-    public void setResults(List<AllData> results) {
+    // Setter
+    public void setResults(List<MoviesResponse> results) {
         this.results = results;
     }
 
-    // Set id's for movies
     public void setId(int id) {
         this.id = id;
     }

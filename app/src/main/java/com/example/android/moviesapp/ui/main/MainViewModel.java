@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.android.moviesapp.data.model.AllData;
+import com.example.android.moviesapp.data.model.MoviesResponse;
 import com.example.android.moviesapp.data.repository.MainRepo;
 
 import javax.inject.Inject;
@@ -27,12 +27,12 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     // Init get request of movies
-    public void initRequest(Single<AllData> endPoint) {
+    public void initRequest(Single<MoviesResponse> endPoint) {
         repo.getResponse(endPoint);
     }
 
     // @return mutable live data of movies
-    public MutableLiveData<AllData> deliverResponse() {
+    public MutableLiveData<MoviesResponse> deliverResponse() {
         return repo.getMutableLiveData();
     }
 

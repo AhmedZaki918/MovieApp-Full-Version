@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.moviesapp.data.local.Constants;
 import com.example.android.moviesapp.databinding.LayoutMainBinding;
-import com.example.android.moviesapp.data.model.AllData;
+import com.example.android.moviesapp.data.model.MoviesResponse;
 import com.example.android.moviesapp.util.OnAdapterClick;
 import com.example.android.moviesapp.util.ViewUtils;
 
@@ -25,7 +25,7 @@ public class MainViewHolder extends RecyclerView.ViewHolder {
     }
 
     // Update views based on current item
-    public void bind(AllData currentItem) {
+    public void bind(MoviesResponse currentItem) {
         binding.tvMovieTitle.setText(currentItem.getTitle());
         binding.tvRating.setText(currentItem.getUserRating());
         // To get poster url
