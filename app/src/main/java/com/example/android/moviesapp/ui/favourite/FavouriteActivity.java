@@ -109,12 +109,10 @@ public class FavouriteActivity extends AppCompatActivity implements OnFavouriteC
 
 
     private void updateUi(List<MoviesResponse> data) {
+        ViewUtils.setupRecyclerView(binding.recyclerView,
+                new GridLayoutManager(this, 2),
+                new FavouriteAdapter(data, this));
         if (data.isEmpty()) deleteConfirmed();
-        else {
-            ViewUtils.setupRecyclerView(binding.recyclerView,
-                    new GridLayoutManager(this, 2),
-                    new FavouriteAdapter(data, this));
-        }
     }
 
 

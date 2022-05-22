@@ -1,5 +1,8 @@
 package com.example.android.moviesapp.ui.details;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,8 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.android.moviesapp.R;
 import com.example.android.moviesapp.data.local.Constants;
 import com.example.android.moviesapp.data.local.MovieDao;
-import com.example.android.moviesapp.data.model.MoviesResponse;
 import com.example.android.moviesapp.data.model.Details;
+import com.example.android.moviesapp.data.model.MoviesResponse;
 import com.example.android.moviesapp.data.model.Reviews.ReviewsResults;
 import com.example.android.moviesapp.data.network.APIService;
 import com.example.android.moviesapp.databinding.ActivityDetailsBinding;
@@ -33,20 +36,20 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-
 @AndroidEntryPoint
 public class DetailsActivity extends AppCompatActivity implements View.OnClickListener,
         OnAdapterClick {
-
 
     // Initialization
     private static final String API_KEY = Constants.Api_key;
     private static final String VIDEOS = "videos";
     private static final String VND = "vnd.youtube:";
     private static final String VIDEO_ID = "VIDEO_ID";
-
+    private DetailsViewModel viewModel;
+    private ActivityDetailsBinding binding;
+    private String givenPoster;
+    private LinearLayoutManager lmTrailer;
+    private MoviesResponse moviesResponse;
 
     @Inject
     APIService apiService;
@@ -54,12 +57,6 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     MovieDao movieDao;
     @Inject
     CompositeDisposable compositeDisposable;
-
-    private DetailsViewModel viewModel;
-    private ActivityDetailsBinding binding;
-    private String givenPoster;
-    private LinearLayoutManager lmTrailer;
-    private MoviesResponse moviesResponse;
 
 
     @Override
@@ -69,7 +66,6 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         // Setup view binding
         binding = ActivityDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
 
         initViews();
         checkState();
@@ -191,7 +187,8 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 
     private void updateBasicInfo() {
         ViewUtils.setupGlide(this, givenPoster, binding.ivPoster);
-        if (getSupportActionBar() != null) getSupportActionBar().setTitle(moviesResponse.getTitle());
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setTitle(moviesResponse.getTitle());
         binding.tvRating.setText(moviesResponse.getUserRating());
         binding.tvOverview.setText(moviesResponse.getOverview());
         binding.tvReleaseDate.setText(moviesResponse.getReleaseDate());

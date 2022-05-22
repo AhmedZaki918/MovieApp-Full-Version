@@ -4,12 +4,12 @@ package com.example.android.moviesapp.data.model;
  * An {@link MoviesResponse} object contains information related to a movie.
  */
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
