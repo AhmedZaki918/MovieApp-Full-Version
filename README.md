@@ -32,11 +32,11 @@ Android app displays all information related to the latest movies in the global 
 
 #### Libraries:
 - Retrofit 2.9.0   (https://square.github.io/retrofit/)
-- Room 2.3.0       (https://developer.android.com/training/data-storage/room)
-- Glide 4.12.0     (https://github.com/bumptech/glide)
+- Room 2.4.2       (https://developer.android.com/training/data-storage/room)
+- Glide 4.13.0     (https://github.com/bumptech/glide)
 - RxJava 3.0.0     (https://github.com/ReactiveX/RxJava)
-- Hilt 2.32-alpha  (https://developer.android.com/training/dependency-injection/hilt-android) 
-- Gson 2.8.6       (https://github.com/google/gson)
+- Hilt 2.40.1 (https://developer.android.com/training/dependency-injection/hilt-android) 
+- Gson 2.9.6       (https://github.com/google/gson)
 - CardView 1.0.0   (https://developer.android.com/jetpack/androidx/releases/cardview)
 - Facebook Shimmer 0.5.0 (https://github.com/facebook/shimmer-android)
 
@@ -49,10 +49,10 @@ To run this project, install it by download or clone.
 Then embed it to the project to run the app.
 
 #### System requirements
-- Android studio v4.2.2
+- Android Studio Chipmunk | 2021.2.1
 - Minimum sdk v21
 - Build tool v30.0.3
-- Compile sdk v30
+- Compile sdk v32
 
 ## YouTube link 
 
