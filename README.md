@@ -27,15 +27,18 @@ Android app displays all information related to the latest movies in the global 
 - Java 
 - xml
 
+#### Architecture patterns:
+- MVVM
+
 #### Libraries:
-- Retrofit 2.9.0 (https://square.github.io/retrofit/)
-- Room 2.2.5 (https://developer.android.com/training/data-storage/room)
-- Picasso 2.71828 (https://square.github.io/picasso/)
-- Gson 2.8.5 (https://github.com/google/gson)
-- RecyclerView 1.1.0 (https://developer.android.com/jetpack/androidx/releases/recyclerview)
-- CardView 1.0.0 (https://developer.android.com/jetpack/androidx/releases/cardview)
-- ButterKnife 10.2.1 (https://github.com/JakeWharton/butterknife)
-- Facebook Shimmer 0.4.0 (https://github.com/facebook/shimmer-android)
+- Retrofit 2.9.0   (https://square.github.io/retrofit/)
+- Room 2.3.0       (https://developer.android.com/training/data-storage/room)
+- Glide 4.12.0     (https://github.com/bumptech/glide)
+- RxJava 3.0.0     (https://github.com/ReactiveX/RxJava)
+- Hilt 2.32-alpha  (https://developer.android.com/training/dependency-injection/hilt-android) 
+- Gson 2.8.6       (https://github.com/google/gson)
+- CardView 1.0.0   (https://developer.android.com/jetpack/androidx/releases/cardview)
+- Facebook Shimmer 0.5.0 (https://github.com/facebook/shimmer-android)
 
 ## Setup
 
@@ -46,10 +49,10 @@ To run this project, install it by download or clone.
 Then embed it to the project to run the app.
 
 #### System requirements
-- Android studio v4.1.1
+- Android studio v4.2.2
 - Minimum sdk v21
-- Build tool v29.0.3
-- Compile sdk v29
+- Build tool v30.0.3
+- Compile sdk v30
 
 ## YouTube link 
 
